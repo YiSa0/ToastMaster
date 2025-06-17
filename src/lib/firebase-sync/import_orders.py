@@ -1,17 +1,26 @@
 import json
 import pyodbc
 from datetime import datetime
+import os
 
 # 读取 order.json 文件
 def read_order_json():
     try:
-        with open('src/lib/firebase-sync/order.json', 'r', encoding='utf-8') as f:
+        file_path = 'src/lib/firebase-sync/order.json'
+        if not os.path.exists(file_path):
+            print(f"错误：找不到文件 {file_path}")
+            return []
+            
+        with open(file_path, 'r', encoding='utf-8') as f:
             data = json.load(f)
             print(f"成功读取 order.json，包含 {len(data)} 个订单")
             return data
+    except json.JSONDecodeError as e:
+        print(f"JSON 解析错误: {str(e)}")
+        return []
     except Exception as e:
         print(f"读取 order.json 失败: {str(e)}")
-        raise e
+        return []
 
 # 连接数据库
 def connect_db():
@@ -22,7 +31,7 @@ def connect_db():
             'DATABASE=project;'
             'UID=Ziyi;'
             'PWD=Zi2005yi;'
-            'AUTOCOMMIT=OFF'  # 禁用自动提交
+            'AUTOCOMMIT=OFF'
         )
         print("数据库连接成功！")
         return conn
@@ -44,11 +53,6 @@ def verify_data(cursor):
     item_count = cursor.fetchone().count
     print(f"OrderItems 表中的记录数: {item_count}")
     
-    # 验证用户
-    cursor.execute("SELECT COUNT(*) as count FROM Users")
-    user_count = cursor.fetchone().count
-    print(f"Users 表中的记录数: {user_count}")
-    
     # 显示最近的订单
     print("\n最近的订单：")
     cursor.execute("""
@@ -68,33 +72,19 @@ def verify_data(cursor):
         print(f"项目数量: {row.item_count}")
         print("---")
 
-# 检查用户是否存在，如果不存在则创建
-def ensure_user_exists(cursor, user_id):
-    try:
-        # 检查用户是否存在
-        cursor.execute("SELECT COUNT(*) FROM Users WHERE uid = ?", (user_id,))
-        if cursor.fetchone()[0] == 0:
-            # 如果用户不存在，创建一个新用户
-            cursor.execute("""
-                INSERT INTO Users (uid, email, displayName, createdAt)
-                VALUES (?, ?, ?, ?)
-            """, (
-                user_id,
-                f"{user_id}@example.com",  # 临时邮箱
-                f"User_{user_id[:8]}",     # 临时用户名
-                datetime.now()             # 当前时间
-            ))
-            print(f"创建新用户: {user_id}")
-    except Exception as e:
-        print(f"创建用户失败: {str(e)}")
-        raise e
+# 检查用户是否存在
+def check_user_exists(cursor, user_id):
+    cursor.execute("SELECT COUNT(*) FROM Users WHERE uid = ?", (user_id,))
+    return cursor.fetchone()[0] > 0
 
 # 插入订单数据
 def insert_order(cursor, order):
     try:
-        # 确保用户存在
-        ensure_user_exists(cursor, order['userId'])
-        
+        # 检查用户是否存在
+        if not check_user_exists(cursor, order['userId']):
+            print(f"警告：用户 {order['userId']} 不存在，跳过此订单")
+            return False
+            
         # 转换日期时间格式
         created_at = datetime.fromisoformat(order['createdAt'].replace('Z', '+00:00'))
         
@@ -111,6 +101,7 @@ def insert_order(cursor, order):
             order.get('specialRequests', '')
         ))
         print(f"插入订单: {order['id']}")
+        return True
     except Exception as e:
         print(f"插入订单失败: {str(e)}")
         raise e
@@ -141,29 +132,29 @@ def insert_order_items(cursor, order):
 
 def main():
     try:
+        print("开始导入订单数据...")
+        
         # 读取订单数据
         orders = read_order_json()
-        
+        if not orders:
+            print("没有找到订单数据，程序退出")
+            return
+            
         # 连接数据库
         conn = connect_db()
         cursor = conn.cursor()
         
         try:
-            # 首先创建所有用户
-            print("\n创建用户...")
-            for order in orders:
-                ensure_user_exists(cursor, order['userId'])
-            
-            # 然后处理每个订单
+            # 处理每个订单
             print("\n处理订单...")
             for order in orders:
                 print(f"\n开始处理订单: {order['id']}")
                 try:
                     # 插入订单
-                    insert_order(cursor, order)
-                    # 插入订单项目
-                    insert_order_items(cursor, order)
-                    print(f"订单 {order['id']} 导入成功")
+                    if insert_order(cursor, order):
+                        # 插入订单项目
+                        insert_order_items(cursor, order)
+                        print(f"订单 {order['id']} 导入成功")
                 except Exception as e:
                     print(f"订单 {order['id']} 导入失败: {str(e)}")
                     raise e
@@ -190,4 +181,5 @@ def main():
         print(f"程序执行出错: {str(e)}")
 
 if __name__ == "__main__":
-    main() 
+    main()
+

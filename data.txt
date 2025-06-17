@@ -45,9 +45,7 @@
 * `category`: nvarchar(50) (Nullable)
 * `dataAiHint`: nvarchar(255) (Nullable)
 
-以下是您提供的其餘資料庫表與欄位精簡後的結構，方便 AI Agent 讀取：
 
-**資料庫表結構 (Table Schemas for JSON Insertion)**
 
 **6. `dbo.OrderItems`**
 * `id`: int (PK, Not Null)
@@ -69,7 +67,7 @@
 
 **8. `dbo.UserProfiles`**
 * `uid`: varchar(50) (PK, FK, Not Null)
-* `fullName`: nvarchar(255) (Nullable)
+* `displayName`: nvarchar(255) (Nullable)
 * `phoneNumber`: nvarchar(20) (Nullable)
 * `birthday`: date (Nullable)
 * `gender`: nvarchar(10) (Nullable)
