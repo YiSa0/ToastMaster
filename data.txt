@@ -1,0 +1,82 @@
+**資料庫表結構 (Table Schemas for JSON Insertion)**
+
+**1. `dbo.AdventurousIngredients`**
+* `id`: int (PK, Not Null)
+* `toastId`: varchar(100) (FK, Nullable)
+* `quantity`: int (Nullable)
+
+**2. `dbo.AdventurousToasts`**
+* `id`: varchar(100) (PK, Not Null)
+* `name`: nvarchar(255) (Nullable)
+* `category`: nvarchar(50) (Nullable)
+* `description`: nvarchar(max) (Nullable)
+* `image`: nvarchar(500) (Nullable)
+* `dataAiHint`: nvarchar(255) (Nullable)
+* `price`: decimal(10,2) (Nullable)
+* `rating`: float (Nullable)
+* `reviewText`: nvarchar(max) (Nullable)
+* `reviewerName`: nvarchar(255) (Nullable)
+
+**3. `dbo.HallOfFame`**
+* `id`: varchar(50) (PK, Not Null)
+* `userName`: nvarchar(255) (Nullable)
+* `toastId`: varchar(100) (Nullable)
+* `dateAchieved`: date (Nullable)
+* `achievementQuote`: nvarchar(max) (Nullable)
+* `userImage`: nvarchar(500) (Nullable)
+
+**4. `dbo.Ingredients`**
+* `id`: int (PK, Not Null)
+* `slug`: varchar(50) (Not Null)
+* `name`: nvarchar(255) (Nullable)
+* `category`: nvarchar(50) (Nullable)
+* `price`: decimal(10,2) (Nullable)
+* `image`: nvarchar(500) (Nullable)
+* `icon`: nvarchar(100) (Nullable)
+* `dataAiHint`: nvarchar(255) (Nullable)
+
+
+**5. `dbo.MenuItems`**
+* `id`: varchar(50) (PK, Not Null)
+* `name`: nvarchar(255) (Nullable)
+* `description`: nvarchar(max) (Nullable)
+* `price`: decimal(10,2) (Nullable)
+* `image`: nvarchar(500) (Nullable)
+* `category`: nvarchar(50) (Nullable)
+* `dataAiHint`: nvarchar(255) (Nullable)
+
+以下是您提供的其餘資料庫表與欄位精簡後的結構，方便 AI Agent 讀取：
+
+**資料庫表結構 (Table Schemas for JSON Insertion)**
+
+**6. `dbo.OrderItems`**
+* `id`: int (PK, Not Null)
+* `orderId`: varchar(50) (FK, Nullable)
+* `itemType`: nvarchar(50) (Nullable)
+* `itemId`: varchar(50) (Nullable)
+* `itemName`: nvarchar(255) (Nullable)
+* `quantity`: int (Nullable)
+* `price`: decimal(10,2) (Nullable)
+* `subTotal`: decimal(10,2) (Nullable)
+
+**7. `dbo.Orders`**
+* `id`: varchar(50) (PK, Not Null)
+* `userId`: varchar(50) (FK, Nullable)
+* `totalAmount`: decimal(10,2) (Nullable)
+* `createdAt`: datetime (Nullable)
+* `status`: nvarchar(50) (Nullable)
+* `note`: nvarchar(max) (Nullable)
+
+**8. `dbo.UserProfiles`**
+* `uid`: varchar(50) (PK, FK, Not Null)
+* `fullName`: nvarchar(255) (Nullable)
+* `phoneNumber`: nvarchar(20) (Nullable)
+* `birthday`: date (Nullable)
+* `gender`: nvarchar(10) (Nullable)
+* `updatedAt`: datetime (Nullable)
+
+**9. `dbo.Users`**
+* `uid`: varchar(50) (PK, Not Null)
+* `email`: varchar(255) (Nullable)
+* `displayName`: nvarchar(255) (Nullable)
+* `createdAt`: datetime (Nullable)
