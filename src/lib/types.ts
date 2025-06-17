@@ -1,25 +1,113 @@
-
 import type { Timestamp } from 'firebase/firestore';
 
+// Ingredients 表接口
 export interface Ingredient {
-  id: string;
+  id: number;
+  slug: string;
   name: string;
-  category: 'meat' | 'sauce' | 'topping' | 'bread';
-  icon?: React.ElementType; // For Lucide icons
-  price: number; // Price per unit/selection
-  image?: string; // Optional image for the ingredient
-  dataAiHint?: string;
+  category: string;
+  price: number;
+  image: string;
+  dataAiHint: string;
 }
 
+// MenuItems 表接口
 export interface MenuItem {
   id: string;
   name: string;
   description: string;
   price: number;
   image: string;
-  category: 'toast_specialty' | 'snack_side' | 'fried_snack' | 'drink';
-  dataAiHint?: string;
+  category: string;
+  dataAiHint: string;
 }
+
+// AdventurousToasts 表接口
+export interface AdventurousToast {
+  id: string;
+  name: string;
+  category: string;
+  description: string;
+  image: string;
+  dataAiHint: string;
+  price: number;
+  rating: number;
+  reviewText: string;
+  reviewerName: string;
+}
+
+// AdventurousIngredients 表接口
+export interface AdventurousIngredient {
+  id: number;
+  toastId: string;
+  quantity: number;
+}
+
+// HallOfFame 表接口
+export interface HallOfFame {
+  id: string;
+  userName: string;
+  toastId: string;
+  dateAchieved: Date;
+  achievementQuote: string;
+  userImage: string;
+}
+
+// 数据库表名枚举
+export enum TableNames {
+  Ingredients = 'Ingredients',
+  MenuItems = 'MenuItems',
+  AdventurousToasts = 'AdventurousToasts',
+  AdventurousIngredients = 'AdventurousIngredients',
+  HallOfFame = 'HallOfFame'
+}
+
+// 数据库字段映射
+export const TableFieldMappings = {
+  [TableNames.Ingredients]: {
+    id: 'id',
+    slug: 'slug',
+    name: 'name',
+    category: 'category',
+    price: 'price',
+    image: 'image',
+    dataAiHint: 'dataAiHint'
+  },
+  [TableNames.MenuItems]: {
+    id: 'id',
+    name: 'name',
+    description: 'description',
+    price: 'price',
+    image: 'image',
+    category: 'category',
+    dataAiHint: 'dataAiHint'
+  },
+  [TableNames.AdventurousToasts]: {
+    id: 'id',
+    name: 'name',
+    category: 'category',
+    description: 'description',
+    image: 'image',
+    dataAiHint: 'dataAiHint',
+    price: 'price',
+    rating: 'rating',
+    reviewText: 'reviewText',
+    reviewerName: 'reviewerName'
+  },
+  [TableNames.AdventurousIngredients]: {
+    id: 'id',
+    toastId: 'toastId',
+    quantity: 'quantity'
+  },
+  [TableNames.HallOfFame]: {
+    id: 'id',
+    userName: 'userName',
+    toastId: 'toastId',
+    dateAchieved: 'dateAchieved',
+    achievementQuote: 'achievementQuote',
+    userImage: 'userImage'
+  }
+};
 
 export interface CustomToast {
   id: string; // Unique ID for this custom toast instance in an order

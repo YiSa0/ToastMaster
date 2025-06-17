@@ -1,0 +1,164 @@
+[
+  {
+    "userId": "hCS6mBaAUiZi0wOQwTDmboyfAwu1",
+    "items": [
+      {
+        "itemPrice": 50,
+        "type": "predefined",
+        "image": "https://placehold.co/300x200.png",
+        "id": "onion-rings-menu",
+        "quantity": 1,
+        "name": "香酥洋蔥圈"
+      },
+      {
+        "itemPrice": 50,
+        "quantity": 1,
+        "image": "https://placehold.co/300x200.png",
+        "id": "coffee",
+        "type": "predefined",
+        "name": "現煮咖啡"
+      },
+      {
+        "itemPrice": 35,
+        "quantity": 1,
+        "image": "https://placehold.co/75x50.png?text=Custom+Toast",
+        "id": "custom-VDFNKOi1",
+        "type": "custom",
+        "details": "白吐司、燻雞、巧克力醬、乳酪絲",
+        "name": "客製化吐司 (VDFNKOi1)"
+      }
+    ],
+    "specialRequests": "",
+    "createdAt": "2025-06-15T10:06:49.043000+00:00",
+    "status": "confirmed",
+    "pickupTime": "19:06",
+    "totalPrice": 135,
+    "id": "3T1ciKsmivRYScJq1TN0"
+  },
+  {
+    "userId": "7aYjJeKFXkeykJVvaXg8TyHLrIY2",
+    "items": [
+      {
+        "itemPrice": 70,
+        "type": "predefined",
+        "image": "/MENU_ITEMS/fried_snack/mozzarella-sticks.jpeg",
+        "id": "mozzarella-sticks",
+        "quantity": 1,
+        "name": "起司條"
+      },
+      {
+        "itemPrice": 50,
+        "quantity": 1,
+        "image": "/MENU_ITEMS/fried_snack/onion-rings.jpeg",
+        "id": "onion-rings-menu",
+        "type": "predefined",
+        "name": "香酥洋蔥圈"
+      },
+      {
+        "name": "經典薯條",
+        "type": "predefined",
+        "image": "/MENU_ITEMS/fried_snack/french-fries.jpeg",
+        "id": "french-fries-menu",
+        "quantity": 1,
+        "itemPrice": 45
+      }
+    ],
+    "specialRequests": "",
+    "createdAt": "2025-06-17T01:17:21.814000+00:00",
+    "status": "confirmed",
+    "pickupTime": "11:17",
+    "totalPrice": 165,
+    "id": "Y6Fn3HyUzrE9UZEYr6oZ"
+  },
+  {
+    "userId": "7aYjJeKFXkeykJVvaXg8TyHLrIY2",
+    "items": [
+      {
+        "name": "香酥洋蔥圈",
+        "image": "https://placehold.co/300x200.png",
+        "type": "predefined",
+        "id": "onion-rings-menu",
+        "quantity": 1,
+        "itemPrice": 50
+      },
+      {
+        "itemPrice": 70,
+        "quantity": 1,
+        "type": "predefined",
+        "id": "mozzarella-sticks",
+        "image": "https://placehold.co/300x200.png",
+        "name": "起司條"
+      },
+      {
+        "name": "墨西哥辣椒爆漿起司球",
+        "quantity": 1,
+        "image": "https://placehold.co/300x200.png",
+        "id": "jalapeno-poppers",
+        "type": "predefined",
+        "itemPrice": 75
+      }
+    ],
+    "specialRequests": "",
+    "createdAt": "2025-06-15T17:52:15.397000+00:00",
+    "status": "confirmed",
+    "pickupTime": "06:52",
+    "totalPrice": 195,
+    "id": "ZQS8gH6gxFLmlHblA1UR"
+  },
+  {
+    "userId": "7aYjJeKFXkeykJVvaXg8TyHLrIY2",
+    "items": [
+      {
+        "itemPrice": 70,
+        "image": "https://placehold.co/75x50.png?text=Custom+Toast",
+        "quantity": 1,
+        "id": "custom-z_0-ivQ_",
+        "type": "custom",
+        "details": "白吐司、檸檬雞、燻雞、巧克力醬、草莓醬、起司片、新鮮草莓、棉花糖",
+        "name": "客製化吐司 (z_0-ivQ_)"
+      }
+    ],
+    "specialRequests": "",
+    "createdAt": "2025-06-15T13:41:20.578000+00:00",
+    "status": "confirmed",
+    "pickupTime": "23:43",
+    "totalPrice": 70,
+    "id": "dQ2hr1vpW0QxfO09ff4n"
+  },
+  {
+    "userId": "hCS6mBaAUiZi0wOQwTDmboyfAwu1",
+    "items": [
+      {
+        "itemPrice": 50,
+        "type": "predefined",
+        "quantity": 1,
+        "id": "onion-rings-menu",
+        "image": "https://placehold.co/300x200.png",
+        "name": "香酥洋蔥圈"
+      },
+      {
+        "itemPrice": 50,
+        "image": "https://placehold.co/300x200.png",
+        "quantity": 1,
+        "id": "coffee",
+        "type": "predefined",
+        "name": "現煮咖啡"
+      },
+      {
+        "name": "客製化吐司 (VDFNKOi1)",
+        "image": "https://placehold.co/75x50.png?text=Custom+Toast",
+        "type": "custom",
+        "id": "custom-VDFNKOi1",
+        "quantity": 1,
+        "details": "白吐司、燻雞、巧克力醬、乳酪絲",
+        "itemPrice": 35
+      }
+    ],
+    "specialRequests": "",
+    "createdAt": "2025-06-15T10:06:43.927000+00:00",
+    "status": "confirmed",
+    "pickupTime": "19:06",
+    "totalPrice": 135,
+    "id": "rSRzyqQVswJfl89GHuRH"
+  }
+]
