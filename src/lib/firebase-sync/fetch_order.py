@@ -1,6 +1,6 @@
 import os
 import json
-from datetime import datetime
+from datetime import datetime, timezone, timedelta
 from firebase_admin import credentials, firestore, initialize_app
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -19,7 +19,10 @@ class FirebaseEncoder(json.JSONEncoder):
     def default(self, obj):
         # 处理 DatetimeWithNanoseconds 类型
         if hasattr(obj, 'timestamp'):
-            return obj.isoformat()
+            # 转换为 UTC+8
+            utc_time = obj.replace(tzinfo=timezone.utc)
+            taipei_time = utc_time.astimezone(timezone(timedelta(hours=8)))
+            return taipei_time.isoformat()
         # 处理其他不可序列化的类型
         return str(obj)
 
@@ -29,6 +32,11 @@ def get_firestore_data(collection_name):
     data = []
     for doc in docs:
         item = doc.to_dict()
+        # 转换 createdAt 字段为 UTC+8
+        if 'createdAt' in item and hasattr(item['createdAt'], 'timestamp'):
+            utc_time = item['createdAt'].replace(tzinfo=timezone.utc)
+            taipei_time = utc_time.astimezone(timezone(timedelta(hours=8)))
+            item['createdAt'] = taipei_time.isoformat()
         item['id'] = doc.id
         data.append(item)
     return data

@@ -4,7 +4,7 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { db } from '@/lib/firebase/config';
-import { collection, query, where, getDocs, orderBy, Timestamp } from 'firebase/firestore';
+import { collection, query, where, getDocs, orderBy, Timestamp, doc, setDoc, getDoc, serverTimestamp } from 'firebase/firestore';
 import type { Order, OrderItem, UserProfileData, GenderOption } from '@/lib/types';
 import { genderOptions } from '@/lib/types'; // Import genderOptions
 import SectionWrapper from '@/components/SectionWrapper';
@@ -19,7 +19,7 @@ import { Separator } from '@/components/ui/separator';
 import Image from 'next/image';
 import Link from 'next/link'; 
 
-const CLEAR_GENDER_VALUE = "_clear_gender_"; // Special value for clearing gender
+const CLEAR_GENDER_VALUE = "__clear_gender__"; 
 
 export default function ProfilePage() {
   const { user, loading: authLoading, signInWithGoogle } = useAuth();
@@ -31,20 +31,60 @@ export default function ProfilePage() {
     phone: '',
     birthday: '',
     gender: '',
+    updatedAt: null,
   });
   const [isSavingProfile, setIsSavingProfile] = useState(false);
+  const [isLoadingProfile, setIsLoadingProfile] = useState(true); // For loading profile data
 
   const [orderHistory, setOrderHistory] = useState<Order[]>([]);
   const [isLoadingHistory, setIsLoadingHistory] = useState(false);
 
   useEffect(() => {
     if (user && db) { 
-      setProfileData(prev => ({
-        ...prev,
-        name: user.displayName || '',
-        email: user.email || '',
-        // In a real app, you'd fetch phone, birthday, gender from Firestore here
-      }));
+      setIsLoadingProfile(true);
+      const fetchUserProfile = async () => {
+        try {
+          const userProfileRef = doc(db, "userProfiles", user.uid);
+          const docSnap = await getDoc(userProfileRef);
+          if (docSnap.exists()) {
+            const data = docSnap.data() as UserProfileData;
+            setProfileData(prev => ({
+              ...prev,
+              name: user.displayName || data.name || '',
+              email: user.email || data.email || '',
+              phone: data.phone || '',
+              birthday: data.birthday || '',
+              gender: data.gender || '',
+              updatedAt: data.updatedAt || null,
+            }));
+          } else {
+            // If no profile, set from auth, other fields remain empty
+            setProfileData(prev => ({
+              ...prev,
+              name: user.displayName || '',
+              email: user.email || '',
+              phone: '',
+              birthday: '',
+              gender: '',
+              updatedAt: null,
+            }));
+            console.log("No such user profile document!");
+          }
+        } catch (error) {
+          console.error("Error fetching user profile:", error);
+          showToast({ title: "錯誤", description: "無法讀取您的個人資料。", variant: "destructive" });
+           setProfileData(prev => ({ // Fallback to auth data on error
+            ...prev,
+            name: user.displayName || '',
+            email: user.email || '',
+            updatedAt: null,
+          }));
+        } finally {
+          setIsLoadingProfile(false);
+        }
+      };
+
+      fetchUserProfile();
 
       const fetchOrderHistory = async () => {
         setIsLoadingHistory(true);
@@ -65,40 +105,62 @@ export default function ProfilePage() {
         }
       };
       fetchOrderHistory();
-    } else {
-      setProfileData({ name: '', email: '', phone: '', birthday: '', gender: '' });
+
+    } else if (!authLoading) { // If not authLoading and no user
+      setProfileData({ name: '', email: '', phone: '', birthday: '', gender: '', updatedAt: null });
       setOrderHistory([]);
+      setIsLoadingProfile(false);
     }
-  }, [user, showToast, db]);
+  }, [user, authLoading, showToast, db]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setProfileData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleGenderChange = (value: GenderOption) => {
-    setProfileData(prev => ({ ...prev, gender: value }));
+  const handleGenderChange = (value: string) => { // Value can be GenderOption or CLEAR_GENDER_VALUE
+    setProfileData(prev => ({ ...prev, gender: value === CLEAR_GENDER_VALUE ? '' : value as GenderOption }));
   };
 
-  const handleSubmitProfile = (e: React.FormEvent) => {
+  const handleSubmitProfile = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!user) {
-      showToast({ title: "尚未登入", description: "請先登入以儲存您的個人資料。", variant: "destructive" });
+    if (!user || !db) {
+      showToast({ title: "尚未登入或資料庫未連接", description: "請先登入以儲存您的個人資料。", variant: "destructive" });
       return;
     }
     setIsSavingProfile(true);
-    // Simulate saving to a backend. In a real app, you'd update Firestore here.
-    console.log("Simulating profile save:", profileData); 
-    setTimeout(() => {
+    
+    const dataToSave: Partial<UserProfileData> = { 
+      phone: profileData.phone || '',
+      birthday: profileData.birthday || '',
+      gender: profileData.gender || '',
+      name: user.displayName || profileData.name, 
+      email: user.email || profileData.email,
+      updatedAt: serverTimestamp(), // Add server timestamp for update time
+    };
+
+    try {
+      const userProfileRef = doc(db, "userProfiles", user.uid);
+      await setDoc(userProfileRef, dataToSave, { merge: true });
       showToast({
-        title: '個人資料已更新 (模擬)',
-        description: '您的額外資訊（電話、生日、性別）已被記錄（此展示中未實際儲存至資料庫）。',
+        title: '個人資料已更新',
+        description: '您的額外資訊已成功儲存至資料庫。',
       });
+      // Optionally re-fetch profile to get the server-generated timestamp if needed immediately in UI
+      const docSnap = await getDoc(userProfileRef);
+      if (docSnap.exists()) {
+         const updatedData = docSnap.data() as UserProfileData;
+         setProfileData(prev => ({...prev, ...updatedData}));
+      }
+    } catch (error) {
+      console.error("Error saving user profile:", error);
+      showToast({ title: "儲存失敗", description: "無法儲存您的個人資料，請稍後再試。", variant: "destructive" });
+    } finally {
       setIsSavingProfile(false);
-    }, 1000);
+    }
   };
 
-  if (authLoading) {
+  if (authLoading || (user && isLoadingProfile)) {
     return (
       <div className="container mx-auto px-6 py-12 flex justify-center items-center min-h-[calc(100vh-200px)]">
         <Loader2 className="h-12 w-12 animate-spin text-primary" />
@@ -117,8 +179,10 @@ export default function ProfilePage() {
         >
           <AlertTriangle className="mx-auto h-16 w-16 text-destructive mb-4" />
           <p className="text-lg mb-6">請登入以存取您的個人資料和訂單紀錄。</p>
-          <Button onClick={signInWithGoogle} size="lg">
-            <LogIn className="mr-2 h-5 w-5" /> 使用 Google 登入
+          <Button asChild size="lg">
+            <Link href="/auth">
+              <LogIn className="mr-2 h-5 w-5" /> 登入/註冊
+            </Link>
           </Button>
         </SectionWrapper>
       </div>
@@ -137,17 +201,22 @@ export default function ProfilePage() {
           <form onSubmit={handleSubmitProfile}>
             <CardHeader>
               <CardTitle className="text-xl">編輯您的詳細資料</CardTitle>
+              {profileData.updatedAt && profileData.updatedAt instanceof Timestamp && (
+                 <CardDescription className="text-xs text-muted-foreground mt-1">
+                   上次更新時間: {new Date(profileData.updatedAt.toDate()).toLocaleString()}
+                 </CardDescription>
+              )}
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="space-y-2">
                 <Label htmlFor="name">全名</Label>
                 <Input id="name" name="name" value={profileData.name} onChange={handleChange} placeholder="輸入您的全名" disabled />
-                 <p className="text-xs text-muted-foreground">姓名由您的 Google 帳戶管理。</p>
+                 <p className="text-xs text-muted-foreground">姓名由您的身份驗證提供者管理。</p>
               </div>
               <div className="space-y-2">
                 <Label htmlFor="email">電子郵件地址</Label>
                 <Input id="email" name="email" type="email" value={profileData.email} onChange={handleChange} placeholder="your@email.com" disabled />
-                <p className="text-xs text-muted-foreground">電子郵件由您的 Google 帳戶管理。</p>
+                <p className="text-xs text-muted-foreground">電子郵件由您的身份驗證提供者管理。</p>
               </div>
               <div className="space-y-2">
                 <Label htmlFor="phone">電話號碼 (選填)</Label>
@@ -160,14 +229,8 @@ export default function ProfilePage() {
               <div className="space-y-2">
                 <Label htmlFor="gender" className="flex items-center gap-1"><Users className="w-4 h-4" /> 性別 (選填)</Label>
                 <Select 
-                  value={profileData.gender || ''} 
-                  onValueChange={(value) => {
-                    if (value === CLEAR_GENDER_VALUE) {
-                      handleGenderChange('');
-                    } else {
-                      handleGenderChange(value as GenderOption);
-                    }
-                  }}
+                  value={profileData.gender || CLEAR_GENDER_VALUE} 
+                  onValueChange={handleGenderChange}
                 >
                   <SelectTrigger id="gender">
                     <SelectValue placeholder="選擇您的性別" />
@@ -182,8 +245,8 @@ export default function ProfilePage() {
               </div>
             </CardContent>
             <CardFooter>
-              <Button type="submit" className="w-full" disabled={isSavingProfile}>
-                <Save className="mr-2 h-4 w-4" /> {isSavingProfile ? '儲存中...' : '儲存變更 (模擬)'}
+              <Button type="submit" className="w-full" disabled={isSavingProfile || isLoadingProfile}>
+                <Save className="mr-2 h-4 w-4" /> {isSavingProfile ? '儲存中...' : '儲存變更'}
               </Button>
             </CardFooter>
           </form>
@@ -220,9 +283,9 @@ export default function ProfilePage() {
                       <CardTitle className="text-lg">訂單 ID: <span className="font-mono text-sm bg-secondary p-1 rounded">{order.id?.substring(0,8)}...</span></CardTitle>
                       <CardDescription className="flex items-center gap-1 mt-1">
                         <CalendarDays className="w-4 h-4" />
-                        {order.createdAt ? new Date((order.createdAt as Timestamp).toDate()).toLocaleDateString() : 'N/A'}
+                        {order.createdAt && order.createdAt instanceof Timestamp ? new Date(order.createdAt.toDate()).toLocaleDateString() : 'N/A'}
                         {' 於 '}
-                        {order.createdAt ? new Date((order.createdAt as Timestamp).toDate()).toLocaleTimeString() : 'N/A'}
+                        {order.createdAt && order.createdAt instanceof Timestamp ? new Date(order.createdAt.toDate()).toLocaleTimeString() : 'N/A'}
                       </CardDescription>
                     </div>
                     <div className="text-right">
@@ -260,3 +323,5 @@ export default function ProfilePage() {
   );
 }
 
+
+    

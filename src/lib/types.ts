@@ -207,6 +207,7 @@ export interface UserProfileData {
   phone?: string;
   birthday?: string; // YYYY-MM-DD
   gender?: 'male' | 'female' | 'other' | 'prefer_not_to_say' | ''; 
+  updatedAt?: Timestamp | null; // Timestamp of when the profile was last updated
 }
 
 export type GenderOption = 'male' | 'female' | 'other' | 'prefer_not_to_say' | '';
