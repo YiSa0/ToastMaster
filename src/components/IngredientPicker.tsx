@@ -1,29 +1,27 @@
-
-import type { Ingredient } from '@/lib/types';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
-import Image from 'next/image';
-import { cn } from '@/lib/utils';
+import { Card, CardContent } from "@/components/ui/card";
+import type { Ingredient } from "@/lib/types";
+import { cn } from "@/lib/utils";
+import { ReactElement } from "react";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
 interface IngredientPickerProps {
   title: string;
+  icon?: ReactElement;
   ingredients: Ingredient[];
   selectedIngredients: Ingredient[];
   onSelectIngredient: (ingredient: Ingredient) => void;
-  maxSelection?: number;
   selectionType?: 'single' | 'multiple';
-  icon?: React.ReactNode;
+  maxSelection?: number;
 }
 
 export default function IngredientPicker({
   title,
+  icon,
   ingredients,
   selectedIngredients,
   onSelectIngredient,
-  maxSelection,
   selectionType = 'multiple',
-  icon,
+  maxSelection,
 }: IngredientPickerProps) {
   const handleSelect = (ingredient: Ingredient) => {
     if (selectionType === 'single') {
@@ -61,7 +59,7 @@ export default function IngredientPicker({
                 key={ingredient.id}
                 onClick={() => !isDisabled && handleSelect(ingredient)}
                 className={cn(
-                  "w-36 h-auto min-h-32 flex-shrink-0 cursor-pointer border-2 transition-all duration-200 ease-in-out hover:shadow-lg flex flex-col justify-center items-center p-2", // Adjusted height and padding
+                  "w-36 h-auto min-h-32 flex-shrink-0 cursor-pointer border-2 transition-all duration-200 ease-in-out hover:shadow-lg flex flex-col justify-center items-center p-2",
                   isSelected ? "border-primary ring-2 ring-primary shadow-md" : "border-border",
                   isDisabled ? "opacity-50 cursor-not-allowed" : ""
                 )}

@@ -1,10 +1,9 @@
-
 "use client";
 
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { db } from '@/lib/firebase/config';
-import { collection, query, where, getDocs, orderBy, Timestamp, doc, setDoc, getDoc, serverTimestamp } from 'firebase/firestore';
+import { collection, query, where, getDocs, orderBy, Timestamp, doc, setDoc, getDoc, serverTimestamp, updateDoc } from 'firebase/firestore';
 import type { Order, OrderItem, UserProfileData, GenderOption } from '@/lib/types';
 import { genderOptions } from '@/lib/types'; // Import genderOptions
 import SectionWrapper from '@/components/SectionWrapper';
@@ -58,20 +57,10 @@ export default function ProfilePage() {
               updatedAt: data.updatedAt || null,
             }));
           } else {
-            // If no profile, set from auth, other fields remain empty
-            setProfileData(prev => ({
-              ...prev,
-              name: user.displayName || '',
-              email: user.email || '',
-              phone: '',
-              birthday: '',
-              gender: '',
-              updatedAt: null,
-            }));
-            console.log("No such user profile document!");
+            console.log("未找到用戶資料");
           }
         } catch (error) {
-          console.error("Error fetching user profile:", error);
+          console.error("獲取用戶資料時出錯:", error);
           showToast({ title: "錯誤", description: "無法讀取您的個人資料。", variant: "destructive" });
            setProfileData(prev => ({ // Fallback to auth data on error
             ...prev,
@@ -86,25 +75,26 @@ export default function ProfilePage() {
 
       fetchUserProfile();
 
-      const fetchOrderHistory = async () => {
-        setIsLoadingHistory(true);
+      const fetchUserOrders = async () => {
         try {
-          const ordersRef = collection(db, 'orders');
-          const q = query(ordersRef, where('userId', '==', user.uid), orderBy('createdAt', 'desc'));
+          const ordersRef = collection(db, "orders");
+          const q = query(
+            ordersRef,
+            where("userId", "==", user.uid),
+            orderBy("createdAt", "desc")
+          );
           const querySnapshot = await getDocs(q);
-          const orders: Order[] = [];
-          querySnapshot.forEach((doc) => {
-            orders.push({ id: doc.id, ...doc.data() } as Order);
-          });
+          const orders = querySnapshot.docs.map(doc => ({
+            id: doc.id,
+            ...doc.data()
+          })) as Order[];
           setOrderHistory(orders);
         } catch (error) {
-          console.error("讀取訂單歷史時發生錯誤:", error);
-          showToast({ title: "錯誤", description: "無法讀取您的訂單歷史。", variant: "destructive" });
-        } finally {
-          setIsLoadingHistory(false);
+          console.error("獲取訂單時出錯:", error);
+          showToast({ title: "錯誤", description: "無法讀取您的訂單記錄。", variant: "destructive" });
         }
       };
-      fetchOrderHistory();
+      fetchUserOrders();
 
     } else if (!authLoading) { // If not authLoading and no user
       setProfileData({ name: '', email: '', phone: '', birthday: '', gender: '', updatedAt: null });
@@ -141,7 +131,7 @@ export default function ProfilePage() {
 
     try {
       const userProfileRef = doc(db, "userProfiles", user.uid);
-      await setDoc(userProfileRef, dataToSave, { merge: true });
+      await updateDoc(userProfileRef, dataToSave);
       showToast({
         title: '個人資料已更新',
         description: '您的額外資訊已成功儲存至資料庫。',
