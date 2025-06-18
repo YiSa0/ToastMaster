@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Link from 'next/link';
 import SectionWrapper from '@/components/SectionWrapper';
@@ -24,7 +23,6 @@ const categoryDetails: Record<AdventurousToastCategory, { title: string, icon: R
   '勇者挑戰': { title: '勇者挑戰', icon: <Flame className="w-6 h-6" />, description: "膽小者勿入！這些吐司將挑戰你的味蕾極限。" },
 };
 
-
 export default function AdventurousToastsPage() {
   const groupedToasts = ADVENTUROUS_TOAST_REVIEWS.reduce((acc, review) => {
     (acc[review.category] = acc[review.category] || []).push(review);
@@ -38,7 +36,9 @@ export default function AdventurousToastsPage() {
         description="探索本店最狂野、最奇特、也最受勇者們喜愛的吐司創作！"
         icon={<FlaskConical className="w-10 h-10" />}
         className="max-w-6xl mx-auto mb-8"
-      />
+      >
+        <div></div>
+      </SectionWrapper>
 
       <div className="flex flex-col md:flex-row gap-8 lg:gap-12">
         <aside className="w-full md:w-64 lg:w-72 md:sticky md:top-24 h-fit">

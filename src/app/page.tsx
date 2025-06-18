@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState, useEffect, useMemo } from 'react';
@@ -19,7 +18,6 @@ import { useAuth } from '@/context/AuthContext';
 import { db } from '@/lib/firebase/config';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
-
 import SectionWrapper from '@/components/SectionWrapper';
 import MenuItemCard from '@/components/MenuItemCard';
 import IngredientPicker from '@/components/IngredientPicker';
@@ -29,6 +27,7 @@ import Image from 'next/image';
 
 import { Utensils, Sandwich, Sparkles, Shuffle, Clock, ShoppingCart, NotebookText, AlertTriangle, Coffee, PlusCircle, Wheat, MapPin, Info, UserCircle, Home, Flame, ShoppingBasket, UtensilsCrossed, Apple, Zap, ChefHat, MinusCircle, XCircle, PartyPopper, BatteryLow, Brain, Paintbrush, Lightbulb, Wand2, MountainSnow, BedDouble, Heart, HeartCrack, Droplets, Drumstick as DrumstickIcon, Smile, Meh, Frown, SunMedium, Cloud, CloudRain, CloudSnow, Wind } from 'lucide-react';
 import { nanoid } from 'nanoid';
+import { ReactElement } from 'react';
 
 const initialCustomToastState: Omit<CustomToast, 'id'> = {
   bread: BREADS[0],
@@ -71,7 +70,6 @@ export default function HomePage() {
     sauces: string[];
   }>({ bread: [], meats: [], toppings: [], sauces: [] });
 
-
   const [randomToast, setRandomToast] = useState<Omit<CustomToast, 'id'> | null>(null);
 
   useEffect(() => {
@@ -100,7 +98,6 @@ export default function HomePage() {
     }
   }, [showToast]);
 
-
   const calculateCustomToastPrice = (toastConfig: Omit<CustomToast, 'id'>): number => {
     let price = toastConfig.bread?.price || 0;
     [...toastConfig.meats, ...toastConfig.sauces, ...toastConfig.toppings].forEach(ing => price += ing.price);
@@ -117,7 +114,7 @@ export default function HomePage() {
   const addPredefinedItemToOrder = (menuItem: MenuItem) => {
     setOrder(prevOrder => {
       const existingItemIndex = prevOrder.items.findIndex(item => item.type === 'predefined' && item.id === menuItem.id);
-      let newItems;
+      let newItems: OrderItem[];
       if (existingItemIndex > -1) {
         newItems = prevOrder.items.map((item, index) =>
           index === existingItemIndex ? { ...item, quantity: item.quantity + 1 } : item
@@ -125,7 +122,7 @@ export default function HomePage() {
       } else {
         newItems = [...prevOrder.items, {
           id: menuItem.id,
-          type: 'predefined',
+          type: 'predefined' as const,
           name: menuItem.name,
           itemPrice: menuItem.price,
           quantity: 1,
@@ -192,7 +189,6 @@ export default function HomePage() {
       return { ...prevOrder, items: newItems };
     });
   };
-
 
   const handleBreadSelect = (bread: Ingredient) => {
     setCurrentCustomToast(prev => ({ ...prev, bread, basePrice: bread.price }));
@@ -303,7 +299,6 @@ export default function HomePage() {
     });
   };
 
-
   const applyAiSuggestionToBuilder = (suggestion: SuggestToastPairingOutput | null) => {
     if (!suggestion) return;
 
@@ -362,11 +357,11 @@ export default function HomePage() {
        return;
     }
 
-    const orderToSave: Order = {
+    const orderToSave = {
       ...order,
       userId: user ? user.uid : null,
-      createdAt: serverTimestamp(), 
-      status: 'confirmed',
+      createdAt: serverTimestamp(),
+      status: 'confirmed' as const,
     };
 
     try {
@@ -374,6 +369,46 @@ export default function HomePage() {
         const docRef = await addDoc(collection(db, "orders"), orderToSave);
         console.log("訂單已儲存至 Firestore，ID: ", docRef.id);
         localStorage.setItem('toastMasterOrder', JSON.stringify({...orderToSave, id: docRef.id, createdAt: new Date().toISOString() }));
+        
+        // 調用同步腳本
+        try {
+          showToast({ title: "正在同步訂單", description: "正在將訂單同步到本地數據庫..." });
+          console.log("開始調用同步 API...");
+          
+          const response = await fetch('/api/sync-orders', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ orderId: docRef.id }),
+          });
+          
+          console.log("同步 API 響應狀態:", response.status);
+          const result = await response.json();
+          console.log("同步 API 響應數據:", result);
+          
+          if (!response.ok) {
+            console.error('同步腳本調用失敗:', result.error);
+            showToast({ 
+              title: "同步警告", 
+              description: "訂單已保存，但同步到本地數據庫時出現問題。請聯繫管理員。",
+              variant: "destructive" 
+            });
+          } else {
+            console.log('同步成功:', result);
+            showToast({ 
+              title: "同步成功", 
+              description: "訂單已成功同步到本地數據庫。" 
+            });
+          }
+        } catch (syncError) {
+          console.error('調用同步腳本時出錯:', syncError);
+          showToast({ 
+            title: "同步警告", 
+            description: "訂單已保存，但同步到本地數據庫時出現問題。請聯繫管理員。",
+            variant: "destructive" 
+          });
+        }
       } else {
         localStorage.setItem('toastMasterOrder', JSON.stringify({...orderToSave, createdAt: new Date().toISOString()}));
         showToast({ title: "訂單已下訂 (訪客)", description: "您的訂單已成功送出。登入以將未來訂單儲存至您的帳戶。" });
@@ -385,13 +420,13 @@ export default function HomePage() {
     }
   };
 
-  const getCategoryIcon = (category: Ingredient['category']) => {
+  const getCategoryIcon = (category: Ingredient['category']): ReactElement => {
     switch (category) {
-      case 'bread': return <Wheat className="w-6 h-6" />;
-      case 'meat': return <DrumstickIcon className="w-6 h-6" />;
-      case 'sauce': return <Droplets className="w-6 h-6" />;
-      case 'topping': return <Sparkles className="w-6 h-6" />;
-      default: return <Utensils className="w-6 h-6" />;
+      case 'bread': return <Wheat className="w-6 h-6 text-primary" />;
+      case 'meat': return <DrumstickIcon className="w-6 h-6 text-primary" />;
+      case 'sauce': return <Droplets className="w-6 h-6 text-primary" />;
+      case 'topping': return <Sparkles className="w-6 h-6 text-primary" />;
+      default: return <Utensils className="w-6 h-6 text-primary" />;
     }
   };
 
@@ -425,10 +460,8 @@ export default function HomePage() {
     }
   };
 
-
   return (
     <div className="container mx-auto px-6 py-8 space-y-12">
-
       <SectionWrapper
         title="歡迎來到 Toast Master！"
         description="您尋找絕妙吐司創作與美味點心的一站式商店。"
@@ -436,23 +469,6 @@ export default function HomePage() {
         className="text-center bg-gradient-to-r from-primary/10 via-background to-accent/10"
         contentClassName="!pt-2"
       >
-        {/* 
-          Detailed AI Image Generation Prompt (800x450 Banner):
-          "Create an 800x450 banner image for 'Toast Master,' a modern, friendly, and creative toast shop.
-          Subject: A visually appealing flat lay or slightly angled close-up of 3-4 distinct, artisanal toasts.
-          Toast Variety:
-          *   One toast should feature savory elements like perfectly ripe avocado slices, a runny-yolk fried or poached egg, and a sprinkle of microgreens or sesame seeds.
-          *   Another toast should showcase sweet toppings, such as fresh berries (strawberries, blueberries), a drizzle of honey or maple syrup, and perhaps a dollop of cream or yogurt.
-          *   A third toast could be more unique, hinting at the shop's creative offerings – maybe something with an interesting spread and unexpected but delicious toppings.
-          Background & Props:
-          *   The toasts should be arranged on a clean, bright surface, ideally a light-colored wooden table, a marble slab, or a textured linen that complements a light gray (approx HSL 0, 0%, 94%) or off-white overall background.
-          *   Subtly incorporate your brand's accent colors: hints of dusty rose (approx HSL 300, 26%, 80%) and soft lavender (approx HSL 240, 60%, 92%) through minimal props like a folded napkin, a small ceramic dish, or a delicate flower in a small vase, ensuring these accents are not overpowering.
-          Lighting & Style:
-          *   Achieve a bright, airy, and welcoming atmosphere using soft, natural daylight or well-diffused studio lighting.
-          *   The style should be modern food photography – clean, crisp, with an emphasis on fresh ingredients, appealing textures, and vibrant (but natural) colors of the food itself.
-          Overall Mood:
-          *   The image should evoke feelings of warmth, creativity, deliciousness, and high quality. It should be inviting and make viewers want to try your toasts. Avoid overly dark, rustic, or cluttered compositions. The feeling should be fresh and delightful."
-        */}
         <Image src="/Decorative_Img/Homepage.jpeg" alt="Toast Master 橫幅" width={800} height={450} className="rounded-lg shadow-lg mx-auto my-6 object-cover w-full" data-ai-hint="artisanal toasts banner" priority />
         <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
           探索我們的招牌吐司菜單、打造您專屬的客製化創作，或讓我們的 AI 大廚給您靈感。別忘了嚐嚐我們美味的配菜和清爽的飲品！

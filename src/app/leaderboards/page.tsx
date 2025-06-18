@@ -1,11 +1,10 @@
-
 import SectionWrapper from '@/components/SectionWrapper';
 import AdventurousToastCard from '@/components/AdventurousToastCard';
 import { ADVENTUROUS_TOAST_REVIEWS, HALL_OF_FAME_ENTRIES, STAFF_PICKS_IDS, getAdventurousToastById } from '@/lib/data';
 import type { AdventurousToastReview, HallOfFameEntry } from '@/lib/types';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Flame, Award, MessageSquareQuote, TrendingUp, Star, Skull, ThumbsUp, Repeat } from 'lucide-react';
+import { Flame, Award, MessageSquareQuote, TrendingUp, Star, Skull, ThumbsUp, Repeat, Trophy, Zap } from 'lucide-react';
 import Image from 'next/image';
 
 const MAX_HALL_OF_FAME_ITEMS = 5;
@@ -47,8 +46,46 @@ export default function LeaderboardsPage() {
         title="Toast Master 排行榜"
         description="探索本店最受歡迎、最受好評、以及最具挑戰性的傳奇吐司！"
         icon={<Flame className="w-10 h-10" />}
-        className="text-center max-w-4xl mx-auto"
-      />
+        className="text-center"
+      >
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <Card className="p-6">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Trophy className="w-6 h-6 text-yellow-500" />
+                最受歡迎吐司
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-muted-foreground">敬請期待排行榜功能！</p>
+            </CardContent>
+          </Card>
+
+          <Card className="p-6">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Star className="w-6 h-6 text-yellow-500" />
+                最高評分吐司
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-muted-foreground">敬請期待排行榜功能！</p>
+            </CardContent>
+          </Card>
+
+          <Card className="p-6">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Zap className="w-6 h-6 text-yellow-500" />
+                最具挑戰性吐司
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-muted-foreground">敬請期待排行榜功能！</p>
+            </CardContent>
+          </Card>
+        </div>
+      </SectionWrapper>
 
       <SectionWrapper title="人氣熱銷排行榜" description="本店最常被翻牌的創意吐司！" icon={<TrendingUp className="w-8 h-8" />}>
         {popularToasts.length > 0 ? (

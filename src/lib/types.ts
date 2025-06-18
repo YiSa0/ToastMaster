@@ -1,14 +1,15 @@
-import type { Timestamp } from 'firebase/firestore';
+import type { Timestamp, FieldValue } from 'firebase/firestore';
 
 // Ingredients 表接口
 export interface Ingredient {
-  id: number;
+  id: string;
   slug: string;
   name: string;
-  category: string;
+  category: 'bread' | 'meat' | 'sauce' | 'topping';
   price: number;
-  image: string;
-  dataAiHint: string;
+  image?: string;
+  dataAiHint?: string;
+  icon?: any; // Lucide React icon component
 }
 
 // MenuItems 表接口
@@ -71,7 +72,8 @@ export const TableFieldMappings = {
     category: 'category',
     price: 'price',
     image: 'image',
-    dataAiHint: 'dataAiHint'
+    dataAiHint: 'dataAiHint',
+    icon: 'icon'
   },
   [TableNames.MenuItems]: {
     id: 'id',
@@ -204,10 +206,10 @@ export interface HallOfFameEntry {
 export interface UserProfileData {
   name: string;
   email: string;
-  phone?: string;
-  birthday?: string; // YYYY-MM-DD
-  gender?: 'male' | 'female' | 'other' | 'prefer_not_to_say' | ''; 
-  updatedAt?: Timestamp | null; // Timestamp of when the profile was last updated
+  phone: string;
+  birthday: string;
+  gender: string;
+  updatedAt: Timestamp | FieldValue | null;
 }
 
 export type GenderOption = 'male' | 'female' | 'other' | 'prefer_not_to_say' | '';

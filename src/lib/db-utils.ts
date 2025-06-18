@@ -8,17 +8,25 @@ import {
   TableFieldMappings 
 } from './types';
 
+const validCategories = ['bread', 'meat', 'sauce', 'topping'] as const;
+type ValidCategory = typeof validCategories[number];
+
 // 数据验证函数
 export const validateIngredient = (data: any): Ingredient | null => {
   try {
+    const category = String(data.category) as ValidCategory;
+    if (!validCategories.includes(category)) {
+      throw new Error(`Invalid category: ${category}`);
+    }
+
     const ingredient: Ingredient = {
-      id: Number(data.id),
+      id: String(data.id),
       slug: String(data.slug),
       name: String(data.name),
-      category: String(data.category),
+      category,
       price: Number(data.price),
-      image: String(data.image),
-      dataAiHint: String(data.dataAiHint)
+      image: data.image ? String(data.image) : undefined,
+      dataAiHint: data.dataAiHint ? String(data.dataAiHint) : undefined,
     };
     return ingredient;
   } catch (error) {
@@ -130,4 +138,27 @@ export const processBatchData = async <T>(
       await processor(validatedItem);
     }
   }
-}; 
+};
+
+export function convertToIngredient(data: any): Ingredient {
+  try {
+    const category = String(data.category) as ValidCategory;
+    if (!validCategories.includes(category)) {
+      throw new Error(`Invalid category: ${category}`);
+    }
+
+    const ingredient: Ingredient = {
+      id: String(data.id),
+      slug: String(data.slug),
+      name: String(data.name),
+      category,
+      price: Number(data.price),
+      image: data.image ? String(data.image) : undefined,
+      dataAiHint: data.dataAiHint ? String(data.dataAiHint) : undefined,
+    };
+    return ingredient;
+  } catch (error) {
+    console.error('Error converting data to Ingredient:', error);
+    throw new Error('Invalid ingredient data');
+  }
+} 

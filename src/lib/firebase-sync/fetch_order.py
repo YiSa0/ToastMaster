@@ -1,7 +1,14 @@
 import os
 import json
+import sys
 from datetime import datetime, timezone, timedelta
 from firebase_admin import credentials, firestore, initialize_app
+
+# 設置控制台編碼
+if os.name == 'nt':  # Windows
+    import ctypes
+    kernel32 = ctypes.windll.kernel32
+    kernel32.SetConsoleOutputCP(65001)  # 設置為 UTF-8 編碼
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 cred_path = os.path.join(BASE_DIR, 'serviceAccountKey.json')
@@ -27,26 +34,42 @@ class FirebaseEncoder(json.JSONEncoder):
         return str(obj)
 
 # 你的資料擷取函式
-def get_firestore_data(collection_name):
-    docs = db.collection(collection_name).get()
-    data = []
-    for doc in docs:
-        item = doc.to_dict()
-        # 转换 createdAt 字段为 UTC+8
-        if 'createdAt' in item and hasattr(item['createdAt'], 'timestamp'):
-            utc_time = item['createdAt'].replace(tzinfo=timezone.utc)
-            taipei_time = utc_time.astimezone(timezone(timedelta(hours=8)))
-            item['createdAt'] = taipei_time.isoformat()
-        item['id'] = doc.id
-        data.append(item)
-    return data
+def get_firestore_data(collection_name, order_id=None):
+    if order_id:
+        # 如果提供了訂單 ID，只獲取該訂單
+        doc = db.collection(collection_name).document(order_id).get()
+        if doc.exists:
+            item = doc.to_dict()
+            if 'createdAt' in item and hasattr(item['createdAt'], 'timestamp'):
+                utc_time = item['createdAt'].replace(tzinfo=timezone.utc)
+                taipei_time = utc_time.astimezone(timezone(timedelta(hours=8)))
+                item['createdAt'] = taipei_time.isoformat()
+            item['id'] = doc.id
+            return [item]
+        return []
+    else:
+        # 否則獲取所有訂單
+        docs = db.collection(collection_name).get()
+        data = []
+        for doc in docs:
+            item = doc.to_dict()
+            if 'createdAt' in item and hasattr(item['createdAt'], 'timestamp'):
+                utc_time = item['createdAt'].replace(tzinfo=timezone.utc)
+                taipei_time = utc_time.astimezone(timezone(timedelta(hours=8)))
+                item['createdAt'] = taipei_time.isoformat()
+            item['id'] = doc.id
+            data.append(item)
+        return data
+
+# 获取命令行参数
+order_id = sys.argv[1] if len(sys.argv) > 1 else None
 
 # 获取数据
-data = get_firestore_data('orders')
+data = get_firestore_data('orders', order_id)
 
 # 将数据写入 order.json
 output_path = os.path.join(BASE_DIR, 'order.json')
 with open(output_path, 'w', encoding='utf-8') as f:
     json.dump(data, f, ensure_ascii=False, indent=2, cls=FirebaseEncoder)
 
-print(f"数据已成功写入到: {output_path}")
+print(f"數據已成功寫入到: {output_path}")

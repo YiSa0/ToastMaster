@@ -39,6 +39,179 @@
     "userId": "7aYjJeKFXkeykJVvaXg8TyHLrIY2",
     "items": [
       {
+        "itemPrice": 60,
+        "type": "predefined",
+        "quantity": 1,
+        "id": "fruit-bowl",
+        "image": "/MENU_ITEMS/snack_side/fruit-bowl.jpeg",
+        "name": "季節水果碗"
+      },
+      {
+        "itemPrice": 50,
+        "type": "predefined",
+        "quantity": 1,
+        "id": "coffee",
+        "image": "/MENU_ITEMS/drinks/coffee.jpeg",
+        "name": "現煮咖啡"
+      },
+      {
+        "name": "客製化吐司 (Elg89Vbk)",
+        "type": "custom",
+        "quantity": 1,
+        "id": "custom-Elg89Vbk",
+        "image": "https://placehold.co/75x50.png?text=Custom+Toast",
+        "details": "全麥吐司、義式臘腸、火腿、花生醬",
+        "itemPrice": 47
+      }
+    ],
+    "specialRequests": "",
+    "createdAt": "2025-06-18T13:45:39.207000+08:00",
+    "status": "confirmed",
+    "pickupTime": "15:47",
+    "totalPrice": 157,
+    "id": "9w983DhXs51JNWyFD6Am"
+  },
+  {
+    "userId": "7aYjJeKFXkeykJVvaXg8TyHLrIY2",
+    "items": [
+      {
+        "itemPrice": 50,
+        "type": "predefined",
+        "quantity": 1,
+        "id": "onion-rings-menu",
+        "image": "/MENU_ITEMS/fried_snack/onion-rings.jpeg",
+        "name": "香酥洋蔥圈"
+      },
+      {
+        "itemPrice": 75,
+        "type": "predefined",
+        "quantity": 1,
+        "id": "jalapeno-poppers",
+        "image": "/MENU_ITEMS/fried_snack/jalapeno-poppers.jpeg",
+        "name": "墨西哥辣椒爆漿起司球"
+      }
+    ],
+    "specialRequests": "",
+    "createdAt": "2025-06-18T12:08:04.157000+08:00",
+    "status": "confirmed",
+    "pickupTime": "14:10",
+    "totalPrice": 125,
+    "id": "D4lVbF2ziM28Dyc9ZFFM"
+  },
+  {
+    "userId": "7aYjJeKFXkeykJVvaXg8TyHLrIY2",
+    "items": [
+      {
+        "name": "客製化吐司 (akvSbUl5)",
+        "type": "custom",
+        "quantity": 1,
+        "id": "custom-akvSbUl5",
+        "image": "https://placehold.co/75x50.png?text=Custom+Toast",
+        "details": "白吐司、義式臘腸、韓式烤肉、蜂蜜、藍莓",
+        "itemPrice": 78
+      }
+    ],
+    "specialRequests": "",
+    "createdAt": "2025-06-18T11:58:19.247000+08:00",
+    "status": "confirmed",
+    "pickupTime": "00:00",
+    "totalPrice": 78,
+    "id": "ENx9aNEhefbgzwF62xOF"
+  },
+  {
+    "userId": "7aYjJeKFXkeykJVvaXg8TyHLrIY2",
+    "items": [
+      {
+        "name": "客製化吐司 (VudnoS64)",
+        "type": "custom",
+        "quantity": 1,
+        "id": "custom-VudnoS64",
+        "image": "https://placehold.co/75x50.png?text=Custom+Toast",
+        "details": "裸麥吐司、柳橙醬、巧克力醬、新鮮草莓、香蕉片、芒果丁",
+        "itemPrice": 95
+      }
+    ],
+    "specialRequests": "",
+    "createdAt": "2025-06-18T10:30:56.281000+08:00",
+    "status": "confirmed",
+    "pickupTime": "11:30",
+    "totalPrice": 95,
+    "id": "KeqQf5a3QtS1tg0tGDk7"
+  },
+  {
+    "userId": "7aYjJeKFXkeykJVvaXg8TyHLrIY2",
+    "items": [
+      {
+        "itemPrice": 70,
+        "type": "predefined",
+        "quantity": 1,
+        "id": "mozzarella-sticks",
+        "image": "/MENU_ITEMS/fried_snack/mozzarella-sticks.jpeg",
+        "name": "起司條"
+      },
+      {
+        "itemPrice": 50,
+        "type": "predefined",
+        "quantity": 1,
+        "id": "onion-rings-menu",
+        "image": "/MENU_ITEMS/fried_snack/onion-rings.jpeg",
+        "name": "香酥洋蔥圈"
+      }
+    ],
+    "specialRequests": "",
+    "createdAt": "2025-06-18T12:09:38.303000+08:00",
+    "status": "confirmed",
+    "pickupTime": "14:11",
+    "totalPrice": 120,
+    "id": "M2GhVOyBKq2tJ0jmxkdB"
+  },
+  {
+    "userId": "7aYjJeKFXkeykJVvaXg8TyHLrIY2",
+    "items": [
+      {
+        "itemPrice": 60,
+        "type": "predefined",
+        "quantity": 1,
+        "id": "fruit-bowl",
+        "image": "/MENU_ITEMS/snack_side/fruit-bowl.jpeg",
+        "name": "季節水果碗"
+      },
+      {
+        "itemPrice": 50,
+        "type": "predefined",
+        "quantity": 1,
+        "id": "onion-rings-menu",
+        "image": "/MENU_ITEMS/fried_snack/onion-rings.jpeg",
+        "name": "香酥洋蔥圈"
+      },
+      {
+        "itemPrice": 70,
+        "type": "predefined",
+        "quantity": 1,
+        "id": "mozzarella-sticks",
+        "image": "/MENU_ITEMS/fried_snack/mozzarella-sticks.jpeg",
+        "name": "起司條"
+      },
+      {
+        "itemPrice": 30,
+        "type": "predefined",
+        "quantity": 1,
+        "id": "classic-toast",
+        "image": "/MENU_ITEMS/toast_specialty/classic-toast.jpeg",
+        "name": "經典奶油吐司"
+      }
+    ],
+    "specialRequests": "",
+    "createdAt": "2025-06-18T10:43:06.634000+08:00",
+    "status": "confirmed",
+    "pickupTime": "11:45",
+    "totalPrice": 210,
+    "id": "MKVWpnZRrfwVdXrQGyOH"
+  },
+  {
+    "userId": "7aYjJeKFXkeykJVvaXg8TyHLrIY2",
+    "items": [
+      {
         "itemPrice": 70,
         "type": "predefined",
         "image": "/MENU_ITEMS/fried_snack/mozzarella-sticks.jpeg",
@@ -109,6 +282,42 @@
     "userId": "7aYjJeKFXkeykJVvaXg8TyHLrIY2",
     "items": [
       {
+        "itemPrice": 60,
+        "type": "predefined",
+        "quantity": 1,
+        "id": "fruit-bowl",
+        "image": "/MENU_ITEMS/snack_side/fruit-bowl.jpeg",
+        "name": "季節水果碗"
+      },
+      {
+        "itemPrice": 50,
+        "type": "predefined",
+        "quantity": 1,
+        "id": "coffee",
+        "image": "/MENU_ITEMS/drinks/coffee.jpeg",
+        "name": "現煮咖啡"
+      },
+      {
+        "name": "客製化吐司 (Elg89Vbk)",
+        "type": "custom",
+        "quantity": 1,
+        "id": "custom-Elg89Vbk",
+        "image": "https://placehold.co/75x50.png?text=Custom+Toast",
+        "details": "全麥吐司、義式臘腸、火腿、花生醬",
+        "itemPrice": 47
+      }
+    ],
+    "specialRequests": "",
+    "createdAt": "2025-06-18T13:45:39.248000+08:00",
+    "status": "confirmed",
+    "pickupTime": "15:47",
+    "totalPrice": 157,
+    "id": "dLpFbk2Gj7chIny7RSF3"
+  },
+  {
+    "userId": "7aYjJeKFXkeykJVvaXg8TyHLrIY2",
+    "items": [
+      {
         "itemPrice": 70,
         "image": "https://placehold.co/75x50.png?text=Custom+Toast",
         "quantity": 1,
@@ -124,6 +333,68 @@
     "pickupTime": "23:43",
     "totalPrice": 70,
     "id": "dQ2hr1vpW0QxfO09ff4n"
+  },
+  {
+    "userId": "7aYjJeKFXkeykJVvaXg8TyHLrIY2",
+    "items": [
+      {
+        "itemPrice": 50,
+        "type": "predefined",
+        "quantity": 1,
+        "id": "coffee",
+        "image": "/MENU_ITEMS/drinks/coffee.jpeg",
+        "name": "現煮咖啡"
+      },
+      {
+        "itemPrice": 60,
+        "type": "predefined",
+        "quantity": 1,
+        "id": "fruit-bowl",
+        "image": "/MENU_ITEMS/snack_side/fruit-bowl.jpeg",
+        "name": "季節水果碗"
+      }
+    ],
+    "specialRequests": "",
+    "createdAt": "2025-06-18T10:35:05.441000+08:00",
+    "status": "confirmed",
+    "pickupTime": "11:36",
+    "totalPrice": 110,
+    "id": "iO56VLRydKUcWavEEv5Z"
+  },
+  {
+    "userId": "7aYjJeKFXkeykJVvaXg8TyHLrIY2",
+    "items": [
+      {
+        "itemPrice": 60,
+        "type": "predefined",
+        "quantity": 1,
+        "id": "fruit-bowl",
+        "image": "/MENU_ITEMS/snack_side/fruit-bowl.jpeg",
+        "name": "季節水果碗"
+      },
+      {
+        "itemPrice": 50,
+        "type": "predefined",
+        "quantity": 1,
+        "id": "onion-rings-menu",
+        "image": "/MENU_ITEMS/fried_snack/onion-rings.jpeg",
+        "name": "香酥洋蔥圈"
+      },
+      {
+        "itemPrice": 50,
+        "type": "predefined",
+        "quantity": 1,
+        "id": "avo-egg-toast",
+        "image": "/MENU_ITEMS/toast_specialty/avo-egg-toast.jpeg",
+        "name": "酪梨蛋蛋吐司"
+      }
+    ],
+    "specialRequests": "",
+    "createdAt": "2025-06-18T12:05:21.669000+08:00",
+    "status": "confirmed",
+    "pickupTime": "14:07",
+    "totalPrice": 160,
+    "id": "l80JrQCsTp0hksrawDDF"
   },
   {
     "userId": "hCS6mBaAUiZi0wOQwTDmboyfAwu1",
@@ -160,5 +431,60 @@
     "pickupTime": "19:06",
     "totalPrice": 135,
     "id": "rSRzyqQVswJfl89GHuRH"
+  },
+  {
+    "userId": "7aYjJeKFXkeykJVvaXg8TyHLrIY2",
+    "items": [
+      {
+        "name": "客製化吐司 (-lekP09L)",
+        "type": "custom",
+        "quantity": 1,
+        "id": "custom--lekP09L",
+        "image": "https://placehold.co/75x50.png?text=Custom+Toast",
+        "details": "白吐司、草莓醬、柳橙醬、酪梨、香蕉片、芒果丁",
+        "itemPrice": 95
+      }
+    ],
+    "specialRequests": "",
+    "createdAt": "2025-06-18T11:47:58.287000+08:00",
+    "status": "confirmed",
+    "pickupTime": "00:48",
+    "totalPrice": 95,
+    "id": "si2ZzW8tceJY7Q1tPr6U"
+  },
+  {
+    "userId": "7aYjJeKFXkeykJVvaXg8TyHLrIY2",
+    "items": [
+      {
+        "itemPrice": 55,
+        "type": "predefined",
+        "quantity": 1,
+        "id": "orange-juice",
+        "image": "/MENU_ITEMS/drinks/orange-juice.jpeg",
+        "name": "新鮮柳橙汁"
+      },
+      {
+        "itemPrice": 50,
+        "type": "predefined",
+        "quantity": 1,
+        "id": "coffee",
+        "image": "/MENU_ITEMS/drinks/coffee.jpeg",
+        "name": "現煮咖啡"
+      },
+      {
+        "itemPrice": 60,
+        "type": "predefined",
+        "quantity": 1,
+        "id": "fruit-bowl",
+        "image": "/MENU_ITEMS/snack_side/fruit-bowl.jpeg",
+        "name": "季節水果碗"
+      }
+    ],
+    "specialRequests": "",
+    "createdAt": "2025-06-18T11:55:24.751000+08:00",
+    "status": "confirmed",
+    "pickupTime": "00:56",
+    "totalPrice": 165,
+    "id": "z4Mpft0Nx7lH6o8GCjvd"
   }
 ]

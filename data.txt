@@ -64,6 +64,7 @@
 * `createdAt`: datetime (Nullable)
 * `status`: nvarchar(50) (Nullable)
 * `note`: nvarchar(max) (Nullable)
+* `pickupTime`: datetime (Nullable)
 
 **8. `dbo.UserProfiles`**
 * `uid`: varchar(50) (PK, FK, Not Null)
