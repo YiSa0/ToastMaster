@@ -60,7 +60,7 @@ const prompt = ai.definePrompt({
   name: 'suggestToastPairingPrompt',
   input: {schema: SuggestToastPairingInputSchema},
   output: {schema: SuggestToastPairingOutputSchema},
-  prompt: `請根據以下資訊，用中文推薦一個吐司搭配。
+  prompt: `請根據以下資訊，用繁體中文推薦一個吐司搭配。
 天氣狀況: "{{weather}}"
 使用者選擇的心情: "{{mood}}"
 {{#if customMoodDescription}}
