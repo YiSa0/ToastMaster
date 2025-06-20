@@ -1,7 +1,8 @@
 import { NextResponse } from 'next/server';
 import { spawn } from 'child_process';
 import path from 'path';
-import fs from 'fs';
+import fs from 'fs'
+import os from 'os';
 
 export async function POST(request: Request) {
   try {
@@ -29,12 +30,14 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: '找不到同步腳本' }, { status: 500 });
     }
     
-    // 在 Windows 上使用 python 命令
-    const pythonCommand = process.platform === 'win32' ? 'python' : 'python3';
+    // 在 Windows 上明確指定 python 路徑，避免呼叫到 Anaconda
+    const pythonCommand = process.platform === 'win32'
+      ? 'C:\\Users\\ziyis\\AppData\\Local\\Programs\\Python\\Python313\\python.exe'
+      : 'python3';
     console.log(`[${new Date().toISOString()}] 使用 Python 命令: ${pythonCommand}`);
     
-    // 执行同步脚本
-    const pythonProcess = spawn(pythonCommand, [scriptPath], {
+    // 執行同步腳本
+    const pythonProcess = spawn(pythonCommand, [scriptPath, orderId], {
       shell: true,
       windowsHide: false, // 在 Windows 上顯示命令窗口
       stdio: 'pipe',
