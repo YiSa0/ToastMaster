@@ -54,15 +54,32 @@ def import_orders():
             print("沒有找到訂單數據，程序退出")
             return False
         
-        # 連接數據庫
-        conn = pyodbc.connect(
-            f"DRIVER={{SQL Server}};"
-            f"SERVER={os.getenv('DB_SERVER')};"
-            f"DATABASE={os.getenv('DB_NAME')};"
-            f"UID={os.getenv('DB_USER')};"
-            f"PWD={os.getenv('DB_PASSWORD')};"
+        # 除錯：印出連線參數（隱藏密碼）
+        db_server = os.getenv('DB_SERVER')
+        db_name = os.getenv('DB_NAME')
+        db_user = os.getenv('DB_USER')
+        db_password = os.getenv('DB_PASSWORD')
+        print(f"[DEBUG] DB_SERVER: {db_server}")
+        print(f"[DEBUG] DB_NAME: {db_name}")
+        print(f"[DEBUG] DB_USER: {db_user}")
+        print(f"[DEBUG] DB_PASSWORD: {'*' * len(db_password) if db_password else None}")
+        conn_str = (
+            "DRIVER={ODBC Driver 17 for SQL Server};"
+            "SERVER=localhost\\SQLEXPRESS;"
+            f"DATABASE={db_name};"
+            f"UID={db_user};"
+            f"PWD={db_password};"
+            "TrustServerCertificate=yes;"
             "AUTOCOMMIT=OFF"
         )
+        print(f"[DEBUG] 連線字串: {conn_str}")
+        # 連接數據庫
+        try:
+            conn = pyodbc.connect(conn_str)
+        except Exception as conn_exc:
+            print(f"[ERROR] 資料庫連線失敗: {str(conn_exc)}")
+            print("[ERROR] 請檢查 SQL Server 是否啟動、連線參數是否正確、網路是否暢通。")
+            return False
         cursor = conn.cursor()
         
         # 處理每個訂單

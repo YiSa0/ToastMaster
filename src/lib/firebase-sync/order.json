@@ -105,6 +105,26 @@
     "userId": "7aYjJeKFXkeykJVvaXg8TyHLrIY2",
     "items": [
       {
+        "name": "客製化吐司 (rnVQ0YqO)",
+        "type": "custom",
+        "quantity": 1,
+        "id": "custom-rnVQ0YqO",
+        "image": "https://placehold.co/75x50.png?text=Custom+Toast",
+        "details": "白吐司、草莓醬、新鮮草莓、香蕉片",
+        "itemPrice": 55
+      }
+    ],
+    "specialRequests": "",
+    "createdAt": "2025-06-20T18:36:22.512000+08:00",
+    "status": "confirmed",
+    "pickupTime": "20:38",
+    "totalPrice": 55,
+    "id": "7mHxyji95I1uDMHNB54i"
+  },
+  {
+    "userId": "7aYjJeKFXkeykJVvaXg8TyHLrIY2",
+    "items": [
+      {
         "itemPrice": 55,
         "type": "predefined",
         "quantity": 1,
@@ -264,6 +284,34 @@
     "userId": "7aYjJeKFXkeykJVvaXg8TyHLrIY2",
     "items": [
       {
+        "itemPrice": 50,
+        "type": "predefined",
+        "quantity": 2,
+        "id": "avo-egg-toast",
+        "image": "/MENU_ITEMS/toast_specialty/avo-egg-toast.jpeg",
+        "name": "酪梨蛋蛋吐司"
+      },
+      {
+        "name": "客製化吐司 (tNJalSV7)",
+        "type": "custom",
+        "quantity": 1,
+        "id": "custom-tNJalSV7",
+        "image": "https://placehold.co/75x50.png?text=Custom+Toast",
+        "details": "白吐司、檸檬雞、巧克力醬、新鮮草莓",
+        "itemPrice": 55
+      }
+    ],
+    "specialRequests": "",
+    "createdAt": "2025-06-20T19:04:43.274000+08:00",
+    "status": "confirmed",
+    "pickupTime": "20:05",
+    "totalPrice": 155,
+    "id": "FL1ukV0h6I8qL5OagTMV"
+  },
+  {
+    "userId": "7aYjJeKFXkeykJVvaXg8TyHLrIY2",
+    "items": [
+      {
         "name": "客製化吐司 (2UJFcOux)",
         "type": "custom",
         "quantity": 1,
@@ -358,6 +406,34 @@
     "userId": "7aYjJeKFXkeykJVvaXg8TyHLrIY2",
     "items": [
       {
+        "itemPrice": 30,
+        "type": "predefined",
+        "quantity": 1,
+        "id": "classic-toast",
+        "image": "/MENU_ITEMS/toast_specialty/classic-toast.jpeg",
+        "name": "經典奶油吐司"
+      },
+      {
+        "name": "客製化吐司 (yyoncL-b)",
+        "type": "custom",
+        "quantity": 1,
+        "id": "custom-yyoncL-b",
+        "image": "https://placehold.co/75x50.png?text=Custom+Toast",
+        "details": "白吐司、檸檬雞、草莓醬、酪梨",
+        "itemPrice": 60
+      }
+    ],
+    "specialRequests": "",
+    "createdAt": "2025-06-20T19:26:34.082000+08:00",
+    "status": "confirmed",
+    "pickupTime": "20:27",
+    "totalPrice": 90,
+    "id": "LYbg2lKbtM6Ndjhzug4X"
+  },
+  {
+    "userId": "7aYjJeKFXkeykJVvaXg8TyHLrIY2",
+    "items": [
+      {
         "itemPrice": 70,
         "type": "predefined",
         "quantity": 1,
@@ -428,6 +504,34 @@
     "userId": "7aYjJeKFXkeykJVvaXg8TyHLrIY2",
     "items": [
       {
+        "itemPrice": 50,
+        "type": "predefined",
+        "quantity": 2,
+        "id": "avo-egg-toast",
+        "image": "/MENU_ITEMS/toast_specialty/avo-egg-toast.jpeg",
+        "name": "酪梨蛋蛋吐司"
+      },
+      {
+        "name": "客製化吐司 (tNJalSV7)",
+        "type": "custom",
+        "quantity": 1,
+        "id": "custom-tNJalSV7",
+        "image": "https://placehold.co/75x50.png?text=Custom+Toast",
+        "details": "白吐司、檸檬雞、巧克力醬、新鮮草莓",
+        "itemPrice": 55
+      }
+    ],
+    "specialRequests": "",
+    "createdAt": "2025-06-20T19:04:16.234000+08:00",
+    "status": "confirmed",
+    "pickupTime": "20:05",
+    "totalPrice": 155,
+    "id": "QlQdQCLU9is1T2RHF55G"
+  },
+  {
+    "userId": "7aYjJeKFXkeykJVvaXg8TyHLrIY2",
+    "items": [
+      {
         "name": "客製化吐司 (pqV-bZfo)",
         "type": "custom",
         "quantity": 1,
@@ -474,6 +578,97 @@
     "userId": "7aYjJeKFXkeykJVvaXg8TyHLrIY2",
     "items": [
       {
+        "itemPrice": 30,
+        "type": "predefined",
+        "quantity": 3,
+        "id": "classic-toast",
+        "image": "/MENU_ITEMS/toast_specialty/classic-toast.jpeg",
+        "name": "經典奶油吐司"
+      },
+      {
+        "itemPrice": 45,
+        "type": "predefined",
+        "quantity": 1,
+        "id": "french-fries-menu",
+        "image": "/MENU_ITEMS/fried_snack/french-fries.jpeg",
+        "name": "經典薯條"
+      }
+    ],
+    "specialRequests": "",
+    "createdAt": "2025-06-20T19:09:45.886000+08:00",
+    "status": "confirmed",
+    "pickupTime": "20:09",
+    "totalPrice": 135,
+    "id": "TyDBr2SWq5cp8nbQCCR5"
+  },
+  {
+    "userId": "7aYjJeKFXkeykJVvaXg8TyHLrIY2",
+    "items": [
+      {
+        "itemPrice": 30,
+        "type": "predefined",
+        "quantity": 3,
+        "id": "classic-toast",
+        "image": "/MENU_ITEMS/toast_specialty/classic-toast.jpeg",
+        "name": "經典奶油吐司"
+      },
+      {
+        "name": "客製化吐司 (Au8S8uBT)",
+        "type": "custom",
+        "quantity": 1,
+        "id": "custom-Au8S8uBT",
+        "image": "https://placehold.co/75x50.png?text=Custom+Toast",
+        "details": "白吐司、巧克力醬、草莓醬",
+        "itemPrice": 30
+      }
+    ],
+    "specialRequests": "",
+    "createdAt": "2025-06-20T19:15:19.884000+08:00",
+    "status": "confirmed",
+    "pickupTime": "20:15",
+    "totalPrice": 120,
+    "id": "WmIRwnOPolqWWeJuvr9L"
+  },
+  {
+    "userId": "7aYjJeKFXkeykJVvaXg8TyHLrIY2",
+    "items": [
+      {
+        "itemPrice": 50,
+        "type": "predefined",
+        "quantity": 1,
+        "id": "avo-egg-toast",
+        "image": "/MENU_ITEMS/toast_specialty/avo-egg-toast.jpeg",
+        "name": "酪梨蛋蛋吐司"
+      },
+      {
+        "itemPrice": 60,
+        "type": "predefined",
+        "quantity": 2,
+        "id": "fruit-bowl",
+        "image": "/MENU_ITEMS/snack_side/fruit-bowl.jpeg",
+        "name": "季節水果碗"
+      },
+      {
+        "name": "客製化吐司 (9huy1RfP)",
+        "type": "custom",
+        "quantity": 1,
+        "id": "custom-9huy1RfP",
+        "image": "https://placehold.co/75x50.png?text=Custom+Toast",
+        "details": "白吐司、煙燻鮭魚、草莓醬",
+        "itemPrice": 55
+      }
+    ],
+    "specialRequests": "",
+    "createdAt": "2025-06-20T18:59:20.705000+08:00",
+    "status": "confirmed",
+    "pickupTime": "19:00",
+    "totalPrice": 225,
+    "id": "Wz5OZjBTTXlJeGbSiMB7"
+  },
+  {
+    "userId": "7aYjJeKFXkeykJVvaXg8TyHLrIY2",
+    "items": [
+      {
         "name": "客製化吐司 (A90UhbCj)",
         "type": "custom",
         "quantity": 1,
@@ -489,6 +684,34 @@
     "pickupTime": "20:33",
     "totalPrice": 90,
     "id": "X38Ra9rm2N9I3QgfWQaT"
+  },
+  {
+    "userId": "7aYjJeKFXkeykJVvaXg8TyHLrIY2",
+    "items": [
+      {
+        "itemPrice": 30,
+        "type": "predefined",
+        "quantity": 2,
+        "id": "classic-toast",
+        "image": "/MENU_ITEMS/toast_specialty/classic-toast.jpeg",
+        "name": "經典奶油吐司"
+      },
+      {
+        "name": "客製化吐司 (ZT7lgrPg)",
+        "type": "custom",
+        "quantity": 1,
+        "id": "custom-ZT7lgrPg",
+        "image": "https://placehold.co/75x50.png?text=Custom+Toast",
+        "details": "全麥吐司、檸檬雞、酪梨",
+        "itemPrice": 52
+      }
+    ],
+    "specialRequests": "",
+    "createdAt": "2025-06-20T19:21:07.709000+08:00",
+    "status": "confirmed",
+    "pickupTime": "20:20",
+    "totalPrice": 112,
+    "id": "X8j8HVPiNjZRHVFgHy2c"
   },
   {
     "userId": "7aYjJeKFXkeykJVvaXg8TyHLrIY2",
@@ -629,6 +852,42 @@
     "userId": "7aYjJeKFXkeykJVvaXg8TyHLrIY2",
     "items": [
       {
+        "itemPrice": 50,
+        "type": "predefined",
+        "quantity": 1,
+        "id": "avo-egg-toast",
+        "image": "/MENU_ITEMS/toast_specialty/avo-egg-toast.jpeg",
+        "name": "酪梨蛋蛋吐司"
+      },
+      {
+        "itemPrice": 30,
+        "type": "predefined",
+        "quantity": 1,
+        "id": "classic-toast",
+        "image": "/MENU_ITEMS/toast_specialty/classic-toast.jpeg",
+        "name": "經典奶油吐司"
+      },
+      {
+        "name": "客製化吐司 (dGsnZyz2)",
+        "type": "custom",
+        "quantity": 1,
+        "id": "custom-dGsnZyz2",
+        "image": "https://placehold.co/75x50.png?text=Custom+Toast",
+        "details": "白吐司、巧克力醬、草莓醬、香蕉片",
+        "itemPrice": 45
+      }
+    ],
+    "specialRequests": "",
+    "createdAt": "2025-06-20T18:54:27.028000+08:00",
+    "status": "confirmed",
+    "pickupTime": "19:55",
+    "totalPrice": 125,
+    "id": "bQpsfBZk760aUIFPsRV2"
+  },
+  {
+    "userId": "7aYjJeKFXkeykJVvaXg8TyHLrIY2",
+    "items": [
+      {
         "itemPrice": 60,
         "type": "predefined",
         "quantity": 1,
@@ -680,6 +939,62 @@
     "pickupTime": "23:43",
     "totalPrice": 70,
     "id": "dQ2hr1vpW0QxfO09ff4n"
+  },
+  {
+    "userId": "7aYjJeKFXkeykJVvaXg8TyHLrIY2",
+    "items": [
+      {
+        "itemPrice": 30,
+        "type": "predefined",
+        "quantity": 3,
+        "id": "classic-toast",
+        "image": "/MENU_ITEMS/toast_specialty/classic-toast.jpeg",
+        "name": "經典奶油吐司"
+      },
+      {
+        "name": "客製化吐司 (BL2EOL_N)",
+        "type": "custom",
+        "quantity": 1,
+        "id": "custom-BL2EOL_N",
+        "image": "https://placehold.co/75x50.png?text=Custom+Toast",
+        "details": "白吐司、草莓醬、新鮮草莓",
+        "itemPrice": 40
+      }
+    ],
+    "specialRequests": "",
+    "createdAt": "2025-06-20T19:49:14.422000+08:00",
+    "status": "confirmed",
+    "pickupTime": "20:49",
+    "totalPrice": 130,
+    "id": "dWaSH4TjS4MuerLzB0q5"
+  },
+  {
+    "userId": "7aYjJeKFXkeykJVvaXg8TyHLrIY2",
+    "items": [
+      {
+        "itemPrice": 30,
+        "type": "predefined",
+        "quantity": 2,
+        "id": "classic-toast",
+        "image": "/MENU_ITEMS/toast_specialty/classic-toast.jpeg",
+        "name": "經典奶油吐司"
+      },
+      {
+        "name": "客製化吐司 (2077ViVT)",
+        "type": "custom",
+        "quantity": 1,
+        "id": "custom-2077ViVT",
+        "image": "https://placehold.co/75x50.png?text=Custom+Toast",
+        "details": "厚片吐司、鮪魚、藍莓醬",
+        "itemPrice": 40
+      }
+    ],
+    "specialRequests": "",
+    "createdAt": "2025-06-20T19:24:23.917000+08:00",
+    "status": "confirmed",
+    "pickupTime": "21:25",
+    "totalPrice": 100,
+    "id": "gEjCA3SdgtbV0idVkDea"
   },
   {
     "userId": "7aYjJeKFXkeykJVvaXg8TyHLrIY2",
@@ -771,6 +1086,114 @@
     "id": "lBi9lOjDbEgeew5p76ic"
   },
   {
+    "userId": "7aYjJeKFXkeykJVvaXg8TyHLrIY2",
+    "items": [
+      {
+        "itemPrice": 30,
+        "type": "predefined",
+        "quantity": 1,
+        "id": "classic-toast",
+        "image": "/MENU_ITEMS/toast_specialty/classic-toast.jpeg",
+        "name": "經典奶油吐司"
+      },
+      {
+        "itemPrice": 50,
+        "type": "predefined",
+        "quantity": 1,
+        "id": "avo-egg-toast",
+        "image": "/MENU_ITEMS/toast_specialty/avo-egg-toast.jpeg",
+        "name": "酪梨蛋蛋吐司"
+      },
+      {
+        "itemPrice": 70,
+        "type": "predefined",
+        "quantity": 1,
+        "id": "mozzarella-sticks",
+        "image": "/MENU_ITEMS/fried_snack/mozzarella-sticks.jpeg",
+        "name": "起司條"
+      },
+      {
+        "itemPrice": 75,
+        "type": "predefined",
+        "quantity": 1,
+        "id": "jalapeno-poppers",
+        "image": "/MENU_ITEMS/fried_snack/jalapeno-poppers.jpeg",
+        "name": "墨西哥辣椒爆漿起司球"
+      },
+      {
+        "name": "客製化吐司 (gsjPglIv)",
+        "type": "custom",
+        "quantity": 1,
+        "id": "custom-gsjPglIv",
+        "image": "https://placehold.co/75x50.png?text=Custom+Toast",
+        "details": "白吐司、巧克力醬、草莓醬、香蕉片、新鮮草莓",
+        "itemPrice": 65
+      }
+    ],
+    "specialRequests": "",
+    "createdAt": "2025-06-20T18:50:26.157000+08:00",
+    "status": "confirmed",
+    "pickupTime": "19:50",
+    "totalPrice": 290,
+    "id": "qAswxpqzHBm8mnJtPREz"
+  },
+  {
+    "userId": "7aYjJeKFXkeykJVvaXg8TyHLrIY2",
+    "items": [
+      {
+        "itemPrice": 50,
+        "type": "predefined",
+        "quantity": 1,
+        "id": "avo-egg-toast",
+        "image": "/MENU_ITEMS/toast_specialty/avo-egg-toast.jpeg",
+        "name": "酪梨蛋蛋吐司"
+      },
+      {
+        "name": "客製化吐司 (GJIUT8if)",
+        "type": "custom",
+        "quantity": 1,
+        "id": "custom-GJIUT8if",
+        "image": "https://placehold.co/75x50.png?text=Custom+Toast",
+        "details": "白吐司、草莓醬、新鮮草莓",
+        "itemPrice": 40
+      }
+    ],
+    "specialRequests": "",
+    "createdAt": "2025-06-20T19:27:35.794000+08:00",
+    "status": "confirmed",
+    "pickupTime": "20:27",
+    "totalPrice": 90,
+    "id": "qBh7Ih0n4D07uqxVPhLO"
+  },
+  {
+    "userId": "7aYjJeKFXkeykJVvaXg8TyHLrIY2",
+    "items": [
+      {
+        "itemPrice": 30,
+        "type": "predefined",
+        "quantity": 2,
+        "id": "classic-toast",
+        "image": "/MENU_ITEMS/toast_specialty/classic-toast.jpeg",
+        "name": "經典奶油吐司"
+      },
+      {
+        "name": "客製化吐司 (0Uvo91wU)",
+        "type": "custom",
+        "quantity": 1,
+        "id": "custom-0Uvo91wU",
+        "image": "https://placehold.co/75x50.png?text=Custom+Toast",
+        "details": "胚芽吐司、燻雞、巧克力醬、酪梨",
+        "itemPrice": 63
+      }
+    ],
+    "specialRequests": "",
+    "createdAt": "2025-06-20T19:54:13.933000+08:00",
+    "status": "confirmed",
+    "pickupTime": "20:54",
+    "totalPrice": 123,
+    "id": "qtXyQ1wWP97I918OWvGO"
+  },
+  {
     "userId": "hCS6mBaAUiZi0wOQwTDmboyfAwu1",
     "items": [
       {
@@ -825,6 +1248,97 @@
     "pickupTime": "00:48",
     "totalPrice": 95,
     "id": "si2ZzW8tceJY7Q1tPr6U"
+  },
+  {
+    "userId": "7aYjJeKFXkeykJVvaXg8TyHLrIY2",
+    "items": [
+      {
+        "itemPrice": 70,
+        "type": "predefined",
+        "quantity": 1,
+        "id": "mozzarella-sticks",
+        "image": "/MENU_ITEMS/fried_snack/mozzarella-sticks.jpeg",
+        "name": "起司條"
+      },
+      {
+        "itemPrice": 60,
+        "type": "predefined",
+        "quantity": 2,
+        "id": "fruit-bowl",
+        "image": "/MENU_ITEMS/snack_side/fruit-bowl.jpeg",
+        "name": "季節水果碗"
+      },
+      {
+        "itemPrice": 55,
+        "type": "predefined",
+        "quantity": 1,
+        "id": "orange-juice",
+        "image": "/MENU_ITEMS/drinks/orange-juice.jpeg",
+        "name": "新鮮柳橙汁"
+      },
+      {
+        "name": "客製化吐司 (T8fZEiv_)",
+        "type": "custom",
+        "quantity": 1,
+        "id": "custom-T8fZEiv_",
+        "image": "https://placehold.co/75x50.png?text=Custom+Toast",
+        "details": "白吐司、巧克力醬、草莓醬、新鮮草莓",
+        "itemPrice": 50
+      }
+    ],
+    "specialRequests": "",
+    "createdAt": "2025-06-20T18:47:14.840000+08:00",
+    "status": "confirmed",
+    "pickupTime": "19:47",
+    "totalPrice": 295,
+    "id": "twlNYDRiZxu3iiX0rKJV"
+  },
+  {
+    "userId": "7aYjJeKFXkeykJVvaXg8TyHLrIY2",
+    "items": [
+      {
+        "itemPrice": 30,
+        "type": "predefined",
+        "quantity": 2,
+        "id": "classic-toast",
+        "image": "/MENU_ITEMS/toast_specialty/classic-toast.jpeg",
+        "name": "經典奶油吐司"
+      },
+      {
+        "name": "客製化吐司 (0Uvo91wU)",
+        "type": "custom",
+        "quantity": 1,
+        "id": "custom-0Uvo91wU",
+        "image": "https://placehold.co/75x50.png?text=Custom+Toast",
+        "details": "胚芽吐司、燻雞、巧克力醬、酪梨",
+        "itemPrice": 63
+      }
+    ],
+    "specialRequests": "",
+    "createdAt": "2025-06-20T19:54:14.244000+08:00",
+    "status": "confirmed",
+    "pickupTime": "20:54",
+    "totalPrice": 123,
+    "id": "uDrtTGOYMm6hiUJyMz9b"
+  },
+  {
+    "userId": "7aYjJeKFXkeykJVvaXg8TyHLrIY2",
+    "items": [
+      {
+        "itemPrice": 30,
+        "type": "predefined",
+        "quantity": 3,
+        "id": "classic-toast",
+        "image": "/MENU_ITEMS/toast_specialty/classic-toast.jpeg",
+        "name": "經典奶油吐司"
+      }
+    ],
+    "specialRequests": "",
+    "createdAt": "2025-06-20T19:40:40.147000+08:00",
+    "status": "confirmed",
+    "pickupTime": "20:39",
+    "totalPrice": 90,
+    "id": "uKzHDFVOMXgjcSibfD87"
   },
   {
     "userId": "7aYjJeKFXkeykJVvaXg8TyHLrIY2",

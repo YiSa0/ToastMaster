@@ -50,8 +50,10 @@ def get_firestore_data(collection_name, order_id=None):
     else:
         # 否則獲取所有訂單
         docs = db.collection(collection_name).get()
+        print(f"[DEBUG] 共抓到 {len(docs)} 筆訂單")
         data = []
         for doc in docs:
+            print(f"[DEBUG] 訂單ID: {doc.id}")
             item = doc.to_dict()
             if 'createdAt' in item and hasattr(item['createdAt'], 'timestamp'):
                 utc_time = item['createdAt'].replace(tzinfo=timezone.utc)
@@ -69,6 +71,11 @@ data = get_firestore_data('orders', order_id)
 
 # 将数据写入 order.json
 output_path = os.path.join(BASE_DIR, 'order.json')
+
+# 每次執行前先刪除舊的 order.json
+if os.path.exists(output_path):
+    os.remove(output_path)
+
 with open(output_path, 'w', encoding='utf-8') as f:
     json.dump(data, f, ensure_ascii=False, indent=2, cls=FirebaseEncoder)
 
