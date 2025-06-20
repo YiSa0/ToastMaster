@@ -105,16 +105,54 @@ def import_orders():
                     item['itemPrice'],
                     item['itemPrice'] * item['quantity']
                 ))
+                # 立刻查詢剛剛插入的那一筆 id
+                cursor.execute("""
+                    SELECT id FROM OrderItems
+                    WHERE orderId = ? AND itemId = ? AND itemName = ? AND quantity = ?
+                    ORDER BY id DESC
+                """, (
+                    order['id'],
+                    item['id'],
+                    item['name'],
+                    item['quantity']
+                ))
+                order_item_id_row = cursor.fetchone()
+                order_item_id = order_item_id_row[0] if order_item_id_row else None
+
+                if order_item_id is None:
+                    print("警告：order_item_id 為 None，跳過 CustomToastIngredients 寫入")
+                    continue
+
+                # 如果是 custom toast，處理材料明細
+                if item['type'] == 'custom' and 'details' in item:
+                    ingredient_names = [n.strip() for n in item['details'].split('、') if n.strip()]
+                    for ing_name in ingredient_names:
+                        cursor.execute("SELECT id FROM Ingredients WHERE name = ?", (ing_name,))
+                        result = cursor.fetchone()
+                        ingredient_id = result[0] if result else None
+                        print(f"處理材料: {ing_name}，OrderItemId: {order_item_id}")
+                        print(f"Ingredients 查詢結果: {result}")
+                        if ingredient_id is None:
+                            print(f"警告：找不到材料 {ing_name}，將 ingredientId 設為 NULL")
+                        cursor.execute("""
+                            INSERT INTO CustomToastIngredients (
+                                orderItemId, ingredientId, ingredientName
+                            ) VALUES (?, ?, ?)
+                        """, (
+                            order_item_id,
+                            ingredient_id,
+                            ing_name
+                        ))
             
             print(f"成功導入訂單: {order['id']}")
         
         # 提交事務
         conn.commit()
-        print_step("✅ 所有訂單數據導入完成")
+        print_step(" 所有訂單數據導入完成")
         return True
         
     except Exception as e:
-        print(f"❌ 導入過程中發生錯誤: {str(e)}")
+        print(f"[ERROR] 導入過程中發生錯誤: {str(e)}")
         if 'conn' in locals():
             conn.rollback()
         return False
@@ -134,6 +172,6 @@ if __name__ == "__main__":
         
         import_orders()
     except Exception as e:
-        print(f"❌ 程序執行出錯: {str(e)}")
+        print(f"[ERROR] 程序執行出錯: {str(e)}")
         sys.exit(1)
 

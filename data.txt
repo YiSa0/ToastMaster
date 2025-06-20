@@ -79,3 +79,11 @@
 * `email`: varchar(255) (Nullable)
 * `displayName`: nvarchar(255) (Nullable)
 * `createdAt`: datetime (Nullable)
+
+
+
+**10. `dbo.CustomToastIngredients`**
+* `id`: int (PK, Not Null)
+* `orderItemId`: int (FK, Not Null)
+* `ingredientId`: int (FK, Not Null)
+* `ingredientName`: nvarchar(50) (Not Null)

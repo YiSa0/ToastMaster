@@ -39,6 +39,109 @@
     "userId": "7aYjJeKFXkeykJVvaXg8TyHLrIY2",
     "items": [
       {
+        "name": "客製化吐司 (pqV-bZfo)",
+        "type": "custom",
+        "quantity": 1,
+        "id": "custom-pqV-bZfo",
+        "image": "https://placehold.co/75x50.png?text=Custom+Toast",
+        "details": "白吐司、培根、巧克力醬、草莓醬、新鮮草莓",
+        "itemPrice": 62
+      },
+      {
+        "name": "AI 推薦吐司 (_zMdUPWu)",
+        "type": "custom",
+        "quantity": 1,
+        "id": "custom-_zMdUPWu",
+        "image": "https://placehold.co/75x50.png?text=Custom+Toast",
+        "details": "白吐司、草莓醬、新鮮草莓、棉花糖",
+        "itemPrice": 45
+      },
+      {
+        "name": "隨機產生吐司 (kLia0yJF)",
+        "type": "custom",
+        "quantity": 1,
+        "id": "custom-kLia0yJF",
+        "image": "https://placehold.co/75x50.png?text=Custom+Toast",
+        "details": "厚片吐司、蜂蜜、奇異果、棉花糖、玉米",
+        "itemPrice": 60
+      },
+      {
+        "itemPrice": 55,
+        "type": "predefined",
+        "quantity": 2,
+        "id": "orange-juice",
+        "image": "/MENU_ITEMS/drinks/orange-juice.jpeg",
+        "name": "新鮮柳橙汁"
+      }
+    ],
+    "specialRequests": "",
+    "createdAt": "2025-06-20T00:47:27.415000+08:00",
+    "status": "confirmed",
+    "pickupTime": "01:47",
+    "totalPrice": 277,
+    "id": "6RrTZRYHwYISooiBWuay"
+  },
+  {
+    "userId": "7aYjJeKFXkeykJVvaXg8TyHLrIY2",
+    "items": [
+      {
+        "name": "客製化吐司 (TA5-59J4)",
+        "type": "custom",
+        "quantity": 1,
+        "id": "custom-TA5-59J4",
+        "image": "https://placehold.co/75x50.png?text=Custom+Toast",
+        "details": "厚片吐司、巧克力醬、新鮮草莓",
+        "itemPrice": 45
+      }
+    ],
+    "specialRequests": "",
+    "createdAt": "2025-06-19T19:37:01.611000+08:00",
+    "status": "confirmed",
+    "pickupTime": "20:37",
+    "totalPrice": 45,
+    "id": "6ntcBtWpnJv3CAr2TDv8"
+  },
+  {
+    "userId": "7aYjJeKFXkeykJVvaXg8TyHLrIY2",
+    "items": [
+      {
+        "itemPrice": 55,
+        "type": "predefined",
+        "quantity": 1,
+        "id": "orange-juice",
+        "image": "/MENU_ITEMS/drinks/orange-juice.jpeg",
+        "name": "新鮮柳橙汁"
+      },
+      {
+        "name": "AI 推薦吐司 (vpHgORAP)",
+        "type": "custom",
+        "quantity": 1,
+        "id": "custom-vpHgORAP",
+        "image": "https://placehold.co/75x50.png?text=Custom+Toast",
+        "details": "全麥吐司、燻雞、起司醬、酪梨、堅果碎（綜合）",
+        "itemPrice": 87
+      },
+      {
+        "name": "隨機產生吐司 (b7iaR9fn)",
+        "type": "custom",
+        "quantity": 1,
+        "id": "custom-b7iaR9fn",
+        "image": "https://placehold.co/75x50.png?text=Custom+Toast",
+        "details": "全麥吐司、柳橙醬、奶酥",
+        "itemPrice": 37
+      }
+    ],
+    "specialRequests": "",
+    "createdAt": "2025-06-19T23:07:12.808000+08:00",
+    "status": "confirmed",
+    "pickupTime": "23:06",
+    "totalPrice": 179,
+    "id": "9I2291fXxkSy5dBstIdm"
+  },
+  {
+    "userId": "7aYjJeKFXkeykJVvaXg8TyHLrIY2",
+    "items": [
+      {
         "itemPrice": 60,
         "type": "predefined",
         "quantity": 1,
@@ -70,6 +173,45 @@
     "pickupTime": "15:47",
     "totalPrice": 157,
     "id": "9w983DhXs51JNWyFD6Am"
+  },
+  {
+    "userId": "7aYjJeKFXkeykJVvaXg8TyHLrIY2",
+    "items": [
+      {
+        "itemPrice": 50,
+        "type": "predefined",
+        "quantity": 3,
+        "id": "avo-egg-toast",
+        "image": "/MENU_ITEMS/toast_specialty/avo-egg-toast.jpeg",
+        "name": "酪梨蛋蛋吐司"
+      }
+    ],
+    "specialRequests": "",
+    "createdAt": "2025-06-19T21:19:33.210000+08:00",
+    "status": "confirmed",
+    "pickupTime": "22:20",
+    "totalPrice": 150,
+    "id": "A3ln9kZ0BHimFLxP2tgW"
+  },
+  {
+    "userId": "7aYjJeKFXkeykJVvaXg8TyHLrIY2",
+    "items": [
+      {
+        "name": "客製化吐司 (wByUEOHu)",
+        "type": "custom",
+        "quantity": 1,
+        "id": "custom-wByUEOHu",
+        "image": "https://placehold.co/75x50.png?text=Custom+Toast",
+        "details": "厚片吐司、巧克力醬、草莓醬、酪梨、新鮮草莓",
+        "itemPrice": 80
+      }
+    ],
+    "specialRequests": "",
+    "createdAt": "2025-06-19T19:35:47.519000+08:00",
+    "status": "confirmed",
+    "pickupTime": "20:36",
+    "totalPrice": 80,
+    "id": "B8UojFsKRo0uInN6oxrb"
   },
   {
     "userId": "7aYjJeKFXkeykJVvaXg8TyHLrIY2",
@@ -117,6 +259,80 @@
     "pickupTime": "00:00",
     "totalPrice": 78,
     "id": "ENx9aNEhefbgzwF62xOF"
+  },
+  {
+    "userId": "7aYjJeKFXkeykJVvaXg8TyHLrIY2",
+    "items": [
+      {
+        "name": "客製化吐司 (2UJFcOux)",
+        "type": "custom",
+        "quantity": 1,
+        "id": "custom-2UJFcOux",
+        "image": "https://placehold.co/75x50.png?text=Custom+Toast",
+        "details": "白吐司、培根、巧克力醬、草莓醬、新鮮草莓",
+        "itemPrice": 62
+      },
+      {
+        "name": "客製化吐司 (jaVT7sRh)",
+        "type": "custom",
+        "quantity": 1,
+        "id": "custom-jaVT7sRh",
+        "image": "https://placehold.co/75x50.png?text=Custom+Toast",
+        "details": "白吐司、奶酥、新鮮草莓、杏仁片、芒果丁",
+        "itemPrice": 88
+      },
+      {
+        "name": "AI 推薦吐司 (1JoHuwZQ)",
+        "type": "custom",
+        "quantity": 1,
+        "id": "custom-1JoHuwZQ",
+        "image": "https://placehold.co/75x50.png?text=Custom+Toast",
+        "details": "全麥吐司、草莓醬、新鮮草莓、彩色巧克力豆",
+        "itemPrice": 54
+      },
+      {
+        "itemPrice": 60,
+        "type": "predefined",
+        "quantity": 1,
+        "id": "fruit-bowl",
+        "image": "/MENU_ITEMS/snack_side/fruit-bowl.jpeg",
+        "name": "季節水果碗"
+      },
+      {
+        "itemPrice": 55,
+        "type": "predefined",
+        "quantity": 1,
+        "id": "orange-juice",
+        "image": "/MENU_ITEMS/drinks/orange-juice.jpeg",
+        "name": "新鮮柳橙汁"
+      }
+    ],
+    "specialRequests": "",
+    "createdAt": "2025-06-20T01:08:15.460000+08:00",
+    "status": "confirmed",
+    "pickupTime": "02:09",
+    "totalPrice": 319,
+    "id": "FoDJGvhVQCM2E5v27Aea"
+  },
+  {
+    "userId": "7aYjJeKFXkeykJVvaXg8TyHLrIY2",
+    "items": [
+      {
+        "name": "客製化吐司 (Xa6wUS4v)",
+        "type": "custom",
+        "quantity": 1,
+        "id": "custom-Xa6wUS4v",
+        "image": "https://placehold.co/75x50.png?text=Custom+Toast",
+        "details": "酸種吐司、花生醬、酪梨、香蕉片",
+        "itemPrice": 66
+      }
+    ],
+    "specialRequests": "",
+    "createdAt": "2025-06-20T16:20:44.033000+08:00",
+    "status": "confirmed",
+    "pickupTime": "17:21",
+    "totalPrice": 66,
+    "id": "JDCstxfSceWU1FIqzy4t"
   },
   {
     "userId": "7aYjJeKFXkeykJVvaXg8TyHLrIY2",
@@ -212,6 +428,72 @@
     "userId": "7aYjJeKFXkeykJVvaXg8TyHLrIY2",
     "items": [
       {
+        "name": "客製化吐司 (pqV-bZfo)",
+        "type": "custom",
+        "quantity": 1,
+        "id": "custom-pqV-bZfo",
+        "image": "https://placehold.co/75x50.png?text=Custom+Toast",
+        "details": "白吐司、培根、巧克力醬、草莓醬、新鮮草莓",
+        "itemPrice": 62
+      },
+      {
+        "name": "AI 推薦吐司 (_zMdUPWu)",
+        "type": "custom",
+        "quantity": 1,
+        "id": "custom-_zMdUPWu",
+        "image": "https://placehold.co/75x50.png?text=Custom+Toast",
+        "details": "白吐司、草莓醬、新鮮草莓、棉花糖",
+        "itemPrice": 45
+      },
+      {
+        "name": "隨機產生吐司 (kLia0yJF)",
+        "type": "custom",
+        "quantity": 1,
+        "id": "custom-kLia0yJF",
+        "image": "https://placehold.co/75x50.png?text=Custom+Toast",
+        "details": "厚片吐司、蜂蜜、奇異果、棉花糖、玉米",
+        "itemPrice": 60
+      },
+      {
+        "itemPrice": 55,
+        "type": "predefined",
+        "quantity": 2,
+        "id": "orange-juice",
+        "image": "/MENU_ITEMS/drinks/orange-juice.jpeg",
+        "name": "新鮮柳橙汁"
+      }
+    ],
+    "specialRequests": "",
+    "createdAt": "2025-06-20T00:46:40.724000+08:00",
+    "status": "confirmed",
+    "pickupTime": "01:47",
+    "totalPrice": 277,
+    "id": "SXYEkHZCdKNCYX7SwtbW"
+  },
+  {
+    "userId": "7aYjJeKFXkeykJVvaXg8TyHLrIY2",
+    "items": [
+      {
+        "name": "客製化吐司 (A90UhbCj)",
+        "type": "custom",
+        "quantity": 1,
+        "id": "custom-A90UhbCj",
+        "image": "https://placehold.co/75x50.png?text=Custom+Toast",
+        "details": "白吐司、煙燻鮭魚、巧克力醬、草莓醬、酪梨",
+        "itemPrice": 90
+      }
+    ],
+    "specialRequests": "",
+    "createdAt": "2025-06-19T19:32:48.787000+08:00",
+    "status": "confirmed",
+    "pickupTime": "20:33",
+    "totalPrice": 90,
+    "id": "X38Ra9rm2N9I3QgfWQaT"
+  },
+  {
+    "userId": "7aYjJeKFXkeykJVvaXg8TyHLrIY2",
+    "items": [
+      {
         "itemPrice": 70,
         "type": "predefined",
         "image": "/MENU_ITEMS/fried_snack/mozzarella-sticks.jpeg",
@@ -247,6 +529,52 @@
     "userId": "7aYjJeKFXkeykJVvaXg8TyHLrIY2",
     "items": [
       {
+        "name": "客製化吐司 (inmpZtwN)",
+        "type": "custom",
+        "quantity": 1,
+        "id": "custom-inmpZtwN",
+        "image": "https://placehold.co/75x50.png?text=Custom+Toast",
+        "details": "白吐司、巧克力醬、草莓醬、新鮮草莓",
+        "itemPrice": 50
+      },
+      {
+        "itemPrice": 55,
+        "type": "predefined",
+        "quantity": 1,
+        "id": "orange-juice",
+        "image": "/MENU_ITEMS/drinks/orange-juice.jpeg",
+        "name": "新鮮柳橙汁"
+      },
+      {
+        "name": "AI 推薦吐司 (mIpxPWQC)",
+        "type": "custom",
+        "quantity": 1,
+        "id": "custom-mIpxPWQC",
+        "image": "https://placehold.co/75x50.png?text=Custom+Toast",
+        "details": "全麥吐司、巧克力醬、新鮮草莓、棉花糖",
+        "itemPrice": 47
+      },
+      {
+        "name": "隨機產生吐司 (8pohDO3K)",
+        "type": "custom",
+        "quantity": 1,
+        "id": "custom-8pohDO3K",
+        "image": "https://placehold.co/75x50.png?text=Custom+Toast",
+        "details": "酸種吐司、肉片、焦糖醬、蘋果片、杏仁片、巧克力片",
+        "itemPrice": 94
+      }
+    ],
+    "specialRequests": "",
+    "createdAt": "2025-06-19T23:34:47.144000+08:00",
+    "status": "confirmed",
+    "pickupTime": "12:35",
+    "totalPrice": 246,
+    "id": "YWRERhdutmWyDPCnRQtL"
+  },
+  {
+    "userId": "7aYjJeKFXkeykJVvaXg8TyHLrIY2",
+    "items": [
+      {
         "name": "香酥洋蔥圈",
         "image": "https://placehold.co/300x200.png",
         "type": "predefined",
@@ -277,6 +605,25 @@
     "pickupTime": "06:52",
     "totalPrice": 195,
     "id": "ZQS8gH6gxFLmlHblA1UR"
+  },
+  {
+    "userId": "7aYjJeKFXkeykJVvaXg8TyHLrIY2",
+    "items": [
+      {
+        "itemPrice": 30,
+        "type": "predefined",
+        "quantity": 3,
+        "id": "classic-toast",
+        "image": "/MENU_ITEMS/toast_specialty/classic-toast.jpeg",
+        "name": "經典奶油吐司"
+      }
+    ],
+    "specialRequests": "",
+    "createdAt": "2025-06-20T00:03:44.877000+08:00",
+    "status": "confirmed",
+    "pickupTime": "02:05",
+    "totalPrice": 90,
+    "id": "ZiR8Wp6SS3VgLWxFZT2l"
   },
   {
     "userId": "7aYjJeKFXkeykJVvaXg8TyHLrIY2",
@@ -397,6 +744,33 @@
     "id": "l80JrQCsTp0hksrawDDF"
   },
   {
+    "userId": "7aYjJeKFXkeykJVvaXg8TyHLrIY2",
+    "items": [
+      {
+        "itemPrice": 50,
+        "type": "predefined",
+        "quantity": 1,
+        "id": "avo-egg-toast",
+        "image": "/MENU_ITEMS/toast_specialty/avo-egg-toast.jpeg",
+        "name": "酪梨蛋蛋吐司"
+      },
+      {
+        "itemPrice": 30,
+        "type": "predefined",
+        "quantity": 1,
+        "id": "classic-toast",
+        "image": "/MENU_ITEMS/toast_specialty/classic-toast.jpeg",
+        "name": "經典奶油吐司"
+      }
+    ],
+    "specialRequests": "",
+    "createdAt": "2025-06-19T23:39:14.593000+08:00",
+    "status": "confirmed",
+    "pickupTime": "12:40",
+    "totalPrice": 80,
+    "id": "lBi9lOjDbEgeew5p76ic"
+  },
+  {
     "userId": "hCS6mBaAUiZi0wOQwTDmboyfAwu1",
     "items": [
       {
@@ -451,6 +825,52 @@
     "pickupTime": "00:48",
     "totalPrice": 95,
     "id": "si2ZzW8tceJY7Q1tPr6U"
+  },
+  {
+    "userId": "7aYjJeKFXkeykJVvaXg8TyHLrIY2",
+    "items": [
+      {
+        "name": "客製化吐司 (pqV-bZfo)",
+        "type": "custom",
+        "quantity": 1,
+        "id": "custom-pqV-bZfo",
+        "image": "https://placehold.co/75x50.png?text=Custom+Toast",
+        "details": "白吐司、培根、巧克力醬、草莓醬、新鮮草莓",
+        "itemPrice": 62
+      },
+      {
+        "name": "AI 推薦吐司 (_zMdUPWu)",
+        "type": "custom",
+        "quantity": 1,
+        "id": "custom-_zMdUPWu",
+        "image": "https://placehold.co/75x50.png?text=Custom+Toast",
+        "details": "白吐司、草莓醬、新鮮草莓、棉花糖",
+        "itemPrice": 45
+      },
+      {
+        "name": "隨機產生吐司 (kLia0yJF)",
+        "type": "custom",
+        "quantity": 1,
+        "id": "custom-kLia0yJF",
+        "image": "https://placehold.co/75x50.png?text=Custom+Toast",
+        "details": "厚片吐司、蜂蜜、奇異果、棉花糖、玉米",
+        "itemPrice": 60
+      },
+      {
+        "itemPrice": 55,
+        "type": "predefined",
+        "quantity": 2,
+        "id": "orange-juice",
+        "image": "/MENU_ITEMS/drinks/orange-juice.jpeg",
+        "name": "新鮮柳橙汁"
+      }
+    ],
+    "specialRequests": "",
+    "createdAt": "2025-06-20T00:46:28.729000+08:00",
+    "status": "confirmed",
+    "pickupTime": "01:47",
+    "totalPrice": 277,
+    "id": "vJIzc26Jl0zgeVlut824"
   },
   {
     "userId": "7aYjJeKFXkeykJVvaXg8TyHLrIY2",

@@ -14,14 +14,14 @@ def run_command(command):
     """执行命令并返回结果"""
     try:
         print_step(f"執行命令: {command}")
-        # 使用 UTF-8 編碼
+        # 使用 Windows 預設編碼（mbcs）
         result = subprocess.run(
             command, 
             shell=True, 
             check=True, 
             capture_output=True, 
             text=True,
-            encoding='utf-8'  # 改用 UTF-8 編碼
+            encoding='mbcs'  # 改用 Windows 預設編碼
         )
         print("命令輸出:")
         print(result.stdout)
@@ -68,7 +68,7 @@ def sync_orders(order_id=None):
         print("❌ 導入訂單數據失敗，同步終止")
         return False
     
-    print_step("✅ 訂單數據同步完成")
+    print_step("[SUCCESS] 所有訂單數據導入完成")
     return True
 
 if __name__ == "__main__":
@@ -81,7 +81,14 @@ if __name__ == "__main__":
         
         # 获取命令行参数
         order_id = sys.argv[1] if len(sys.argv) > 1 else None
+        
+        # 強制 Python 輸出為 UTF-8
+        if sys.stdout.encoding.lower() != 'utf-8':
+            sys.stdout = open(sys.stdout.fileno(), mode='w', encoding='utf-8', buffering=1)
+        
         sync_orders(order_id)
     except Exception as e:
-        print(f"❌ 同步過程發生錯誤: {str(e)}")
+        import traceback
+        print(traceback.format_exc())
+        print(f" 同步過程發生錯誤: {str(e)}")
         sys.exit(1) 
