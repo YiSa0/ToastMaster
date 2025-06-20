@@ -1,14 +1,18 @@
+import os
 import pyodbc
+from dotenv import load_dotenv
+
+load_dotenv()
 
 def check_tables():
     try:
         # 连接数据库
         conn = pyodbc.connect(
-            'DRIVER={SQL Server};'
-            'SERVER=YUNNN\\SQLEXPRESS;'
-            'DATABASE=project;'
-            'UID=Ziyi;'
-            'PWD=Zi2005yi'
+            f"DRIVER={{SQL Server}};"
+            f"SERVER={os.getenv('DB_SERVER')};"
+            f"DATABASE={os.getenv('DB_NAME')};"
+            f"UID={os.getenv('DB_USER')};"
+            f"PWD={os.getenv('DB_PASSWORD')}"
         )
         print("数据库连接成功！")
         

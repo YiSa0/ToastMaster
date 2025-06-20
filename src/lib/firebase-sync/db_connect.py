@@ -1,13 +1,17 @@
+import os
 import pyodbc
 import pandas as pd
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # SQL Server 連線字串
 conn = pyodbc.connect(
-    'DRIVER={ODBC Driver 16 for SQL Server};'
-    'SERVER=YUNNN\\SQLEXPRESS;'  # 使用您的 SQL Server 实例名称
-    'DATABASE=project;'
-    'UID=Ziyi;'
-    'PWD=Zi2005yi'
+    f"DRIVER={{ODBC Driver 16 for SQL Server}};"
+    f"SERVER={os.getenv('DB_SERVER')};"
+    f"DATABASE={os.getenv('DB_NAME')};"
+    f"UID={os.getenv('DB_USER')};"
+    f"PWD={os.getenv('DB_PASSWORD')}"
 )
 
 cursor = conn.cursor()
