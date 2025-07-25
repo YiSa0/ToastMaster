@@ -1,0 +1,18 @@
+# ✅ 一般不需要讓 AI 讀取的大型資料或建構檔案
+node_modules/
+public/
+src/lib/firebase-sync/
+data.sql
+data.txt
+project-structure.txt
+package-lock.json
+
+# ✅ 開發與建構相關設定檔（通常對 Gemini 幫助不大）
+postcss.config.mjs
+tailwind.config.ts
+tsconfig.json
+next.config.mjs
+next-env.d.ts
+
+# ✅ 若不希望 AI 讀 blueprint 說明書，也可排除
+docs/
