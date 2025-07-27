@@ -14,34 +14,34 @@ def connect_db():
             f"PWD={os.getenv('DB_PASSWORD')};"
             "AUTOCOMMIT=OFF"
         )
-        print("数据库连接成功！")
+        print("資料庫連線成功！")
         return conn
     except Exception as e:
-        print(f"数据库连接失败: {str(e)}")
+        print(f"資料庫連線失敗: {str(e)}")
         raise e
 
 def delete_orders():
     try:
-        # 连接数据库
+        # 連接資料庫
         conn = connect_db()
         cursor = conn.cursor()
         
         try:
-            # 首先删除 OrderItems 表中的数据（因为有外键约束）
+            # 首先刪除 OrderItems 資料表中的資料（因為有外鍵約束）
             cursor.execute("DELETE FROM OrderItems")
-            print("已删除 OrderItems 表中的所有数据")
+            print("已刪除 OrderItems 資料表中的所有資料")
             
-            # 然后删除 Orders 表中的数据
+            # 然後刪除 Orders 資料表中的資料
             cursor.execute("DELETE FROM Orders")
-            print("已删除 Orders 表中的所有数据")
+            print("已刪除 Orders 資料表中的所有資料")
             
-            # 提交更改
+            # 提交變更
             conn.commit()
-            print("所有订单数据已成功删除！")
+            print("所有訂單資料已成功刪除！")
             
         except Exception as e:
             conn.rollback()
-            print(f"删除数据时出错: {str(e)}")
+            print(f"刪除資料時發生錯誤: {str(e)}")
             raise e
             
         finally:
@@ -49,7 +49,7 @@ def delete_orders():
             conn.close()
             
     except Exception as e:
-        print(f"程序执行出错: {str(e)}")
+        print(f"程式執行錯誤: {str(e)}")
 
 if __name__ == "__main__":
-    delete_orders() 
+    delete_orders()

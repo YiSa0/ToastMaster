@@ -6,7 +6,7 @@ load_dotenv()
 
 def check_tables():
     try:
-        # 连接数据库
+        # 連接資料庫
         conn = pyodbc.connect(
             f"DRIVER={{SQL Server}};"
             f"SERVER={os.getenv('DB_SERVER')};"
@@ -14,15 +14,15 @@ def check_tables():
             f"UID={os.getenv('DB_USER')};"
             f"PWD={os.getenv('DB_PASSWORD')}"
         )
-        print("数据库连接成功！")
+        print("資料庫連線成功！")
         
         cursor = conn.cursor()
         
-        # 检查表结构
-        print("\n检查表结构：")
+        # 檢查資料表結構
+        print("\n檢查資料表結構：")
         
-        # 检查 Orders 表
-        print("\nOrders 表结构：")
+        # 檢查 Orders 資料表
+        print("\nOrders 資料表結構：")
         cursor.execute("""
             SELECT COLUMN_NAME, DATA_TYPE, CHARACTER_MAXIMUM_LENGTH, IS_NULLABLE
             FROM INFORMATION_SCHEMA.COLUMNS
@@ -30,14 +30,14 @@ def check_tables():
             ORDER BY ORDINAL_POSITION
         """)
         for row in cursor.fetchall():
-            print(f"列名: {row.COLUMN_NAME}")
-            print(f"数据类型: {row.DATA_TYPE}")
-            print(f"最大长度: {row.CHARACTER_MAXIMUM_LENGTH}")
-            print(f"允许空值: {row.IS_NULLABLE}")
+            print(f"欄位名稱: {row.COLUMN_NAME}")
+            print(f"資料型別: {row.DATA_TYPE}")
+            print(f"最大長度: {row.CHARACTER_MAXIMUM_LENGTH}")
+            print(f"允許空值: {row.IS_NULLABLE}")
             print("---")
             
-        # 检查 OrderItems 表
-        print("\nOrderItems 表结构：")
+        # 檢查 OrderItems 資料表
+        print("\nOrderItems 資料表結構：")
         cursor.execute("""
             SELECT COLUMN_NAME, DATA_TYPE, CHARACTER_MAXIMUM_LENGTH, IS_NULLABLE
             FROM INFORMATION_SCHEMA.COLUMNS
@@ -45,14 +45,14 @@ def check_tables():
             ORDER BY ORDINAL_POSITION
         """)
         for row in cursor.fetchall():
-            print(f"列名: {row.COLUMN_NAME}")
-            print(f"数据类型: {row.DATA_TYPE}")
-            print(f"最大长度: {row.CHARACTER_MAXIMUM_LENGTH}")
-            print(f"允许空值: {row.IS_NULLABLE}")
+            print(f"欄位名稱: {row.COLUMN_NAME}")
+            print(f"資料型別: {row.DATA_TYPE}")
+            print(f"最大長度: {row.CHARACTER_MAXIMUM_LENGTH}")
+            print(f"允許空值: {row.IS_NULLABLE}")
             print("---")
             
-        # 检查 Users 表
-        print("\nUsers 表结构：")
+        # 檢查 Users 資料表
+        print("\nUsers 資料表結構：")
         cursor.execute("""
             SELECT COLUMN_NAME, DATA_TYPE, CHARACTER_MAXIMUM_LENGTH, IS_NULLABLE
             FROM INFORMATION_SCHEMA.COLUMNS
@@ -60,14 +60,14 @@ def check_tables():
             ORDER BY ORDINAL_POSITION
         """)
         for row in cursor.fetchall():
-            print(f"列名: {row.COLUMN_NAME}")
-            print(f"数据类型: {row.DATA_TYPE}")
-            print(f"最大长度: {row.CHARACTER_MAXIMUM_LENGTH}")
-            print(f"允许空值: {row.IS_NULLABLE}")
+            print(f"欄位名稱: {row.COLUMN_NAME}")
+            print(f"資料型別: {row.DATA_TYPE}")
+            print(f"最大長度: {row.CHARACTER_MAXIMUM_LENGTH}")
+            print(f"允許空值: {row.IS_NULLABLE}")
             print("---")
             
-        # 检查外键约束
-        print("\n外键约束：")
+        # 檢查外鍵約束
+        print("\n外鍵約束：")
         cursor.execute("""
             SELECT 
                 OBJECT_NAME(f.parent_object_id) AS TableName,
@@ -79,14 +79,14 @@ def check_tables():
                 ON f.object_id = fc.constraint_object_id
         """)
         for row in cursor.fetchall():
-            print(f"表: {row.TableName}")
-            print(f"列: {row.ColumnName}")
-            print(f"引用表: {row.ReferencedTableName}")
-            print(f"引用列: {row.ReferencedColumnName}")
+            print(f"資料表: {row.TableName}")
+            print(f"欄位: {row.ColumnName}")
+            print(f"參考資料表: {row.ReferencedTableName}")
+            print(f"參考欄位: {row.ReferencedColumnName}")
             print("---")
             
     except Exception as e:
-        print(f"发生错误: {str(e)}")
+        print(f"發生錯誤: {str(e)}")
     finally:
         if 'cursor' in locals():
             cursor.close()
@@ -94,4 +94,4 @@ def check_tables():
             conn.close()
 
 if __name__ == "__main__":
-    check_tables() 
+    check_tables()

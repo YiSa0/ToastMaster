@@ -7,8 +7,8 @@ from firebase_admin import auth, credentials, firestore, initialize_app
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 cred_path = os.path.join(BASE_DIR, 'serviceAccountKey.json')
 
-print("Credential path:", cred_path)
-print("Exists?", os.path.exists(cred_path))
+print("憑證路徑:", cred_path)
+print("檔案是否存在？", os.path.exists(cred_path))
 
 cred = credentials.Certificate(cred_path)
 initialize_app(cred)
@@ -16,12 +16,12 @@ initialize_app(cred)
 # 初始化 Firestore
 db = firestore.client()
 
-# 自定義 JSON 編碼器
+# 自訂 JSON 編碼器
 class FirebaseEncoder(json.JSONEncoder):
     def default(self, obj):
         # 處理 DatetimeWithNanoseconds 類型
         if hasattr(obj, 'timestamp'):
-            # 轉換為 UTC+8
+            # 轉換為 UTC+8（台北時間）
             utc_time = obj.replace(tzinfo=timezone.utc)
             taipei_time = utc_time.astimezone(timezone(timedelta(hours=8)))
             return taipei_time.isoformat()
@@ -30,7 +30,7 @@ class FirebaseEncoder(json.JSONEncoder):
 
 def ts_to_iso(ts):
     if ts:
-        # 將時間戳轉換為 UTC+8 時間
+        # 將時間戳轉換為 UTC+8 時區時間
         utc_time = datetime.fromtimestamp(ts / 1000, timezone.utc)
         taipei_time = utc_time.astimezone(timezone(timedelta(hours=8)))
         return taipei_time.isoformat()
@@ -60,14 +60,14 @@ def get_firestore_data(collection_name):
     data = []
     for doc in docs:
         item = doc.to_dict()
-        # 打印每个文档的原始数据，用于调试
-        print(f"Document ID: {doc.id}")
-        print(f"Raw data: {item}")
+        # 顯示每筆文件的原始資料以供除錯
+        print(f"文件 ID: {doc.id}")
+        print(f"原始資料: {item}")
         
-        # 确保所有字段都被正确获取
+        # 確保所有欄位皆正確擷取
         profile_data = {
             'id': doc.id,
-            'displayName': item.get('name'),  # 使用 name 作为 displayName
+            'displayName': item.get('name'),  # 使用 name 作為 displayName
             'phoneNumber': item.get('phone'),
             'birthday': item.get('birthday'),
             'gender': item.get('gender'),
@@ -77,10 +77,10 @@ def get_firestore_data(collection_name):
     return data
 
 def merge_user_data(users, profiles):
-    # 創建一個以 uid 為鍵的用戶資料字典
+    # 建立一個以 uid 為鍵的用戶資料字典
     profiles_dict = {profile['id']: profile for profile in profiles}
     
-    # 合併數據
+    # 合併資料
     merged_data = []
     for user in users:
         user_id = user['uid']
@@ -105,28 +105,28 @@ def merge_user_data(users, profiles):
 
 def main():
     try:
-        # 獲取用戶認證數據
-        print("正在獲取用戶認證數據...")
+        # 取得用戶認證資料
+        print("正在取得用戶認證資料...")
         users = get_all_users()
-        print(f"成功獲取 {len(users)} 個用戶認證數據")
+        print(f"成功取得 {len(users)} 筆用戶認證資料")
 
-        # 獲取用戶資料
-        print("正在獲取用戶資料...")
+        # 取得用戶個人檔案資料
+        print("正在取得用戶個人資料...")
         profiles = get_firestore_data('userProfiles')
-        print(f"成功獲取 {len(profiles)} 個用戶資料")
+        print(f"成功取得 {len(profiles)} 筆用戶個人資料")
 
-        # 合併數據
+        # 合併資料
         merged_data = merge_user_data(users, profiles)
-        print(f"成功合併 {len(merged_data)} 個用戶數據")
+        print(f"成功合併 {len(merged_data)} 筆用戶資料")
 
-        # 保存到 JSON 文件
+        # 儲存為 JSON 檔案
         output_path = os.path.join(BASE_DIR, 'users_merged.json')
         with open(output_path, 'w', encoding='utf-8') as f:
             json.dump(merged_data, f, ensure_ascii=False, indent=2, cls=FirebaseEncoder)
-        print(f"數據已成功寫入到: {output_path}")
+        print(f"資料已成功寫入至：{output_path}")
 
     except Exception as e:
-        print(f"程序執行出錯: {str(e)}")
+        print(f"程式執行錯誤: {str(e)}")
 
 if __name__ == "__main__":
-    main() 
+    main()

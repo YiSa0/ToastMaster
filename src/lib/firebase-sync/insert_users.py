@@ -6,12 +6,12 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-# 读取JSON文件
+# 讀取 JSON 檔案
 def read_users_json():
     with open('src/lib/firebase-sync/users_merged.json', 'r', encoding='utf-8') as file:
         return json.load(file)
 
-# 数据库连接
+# 資料庫連線
 def get_db_connection():
     return pyodbc.connect(
         f"DRIVER={{SQL Server}};"
@@ -26,7 +26,7 @@ def format_datetime(dt_str):
     if not dt_str:
         return None
     try:
-        # 移除时区信息并解析日期时间
+        # 移除時區資訊並解析日期時間
         dt_str = dt_str.split('+')[0] if '+' in dt_str else dt_str
         dt = datetime.fromisoformat(dt_str)
         return dt.strftime('%Y-%m-%d %H:%M:%S')
@@ -47,25 +47,25 @@ def check_user_exists(cursor, uid):
 
 def insert_users_data():
     try:
-        # 读取用户数据
+        # 讀取使用者資料
         users_data = read_users_json()
         
-        # 建立数据库连接
+        # 建立資料庫連線
         conn = get_db_connection()
         cursor = conn.cursor()
         
         for user in users_data:
-            # 检查用户是否已存在
+            # 檢查使用者是否已存在
             if check_user_exists(cursor, user['uid']):
-                print(f"用户 {user['uid']} 已存在，跳过插入")
+                print(f"使用者 {user['uid']} 已存在，跳過插入")
                 continue
                 
-            # 格式化日期时间
+            # 格式化日期時間
             created_at = format_datetime(user.get('createdAt'))
             updated_at = format_datetime(user.get('updatedAt'))
             birthday = format_date(user.get('birthday'))
             
-            # 插入 Users 表
+            # 插入 Users 資料表
             cursor.execute("""
                 INSERT INTO Users (uid, email, displayName, createdAt)
                 VALUES (?, ?, ?, ?)
@@ -76,7 +76,7 @@ def insert_users_data():
                 created_at
             ))
             
-            # 插入 UserProfiles 表
+            # 插入 UserProfiles 資料表
             cursor.execute("""
                 INSERT INTO UserProfiles (uid, displayName, phoneNumber, birthday, gender, updatedAt)
                 VALUES (?, ?, ?, ?, ?, ?)
@@ -89,14 +89,14 @@ def insert_users_data():
                 updated_at
             ))
             
-            print(f"成功插入用户: {user['uid']}")
+            print(f"成功插入使用者: {user['uid']}")
         
-        # 提交事务
+        # 提交交易
         conn.commit()
-        print("所有数据插入成功！")
+        print("所有資料插入成功！")
         
     except Exception as e:
-        print(f"发生错误: {str(e)}")
+        print(f"發生錯誤: {str(e)}")
         if 'conn' in locals():
             conn.rollback()
     finally:
@@ -106,4 +106,4 @@ def insert_users_data():
             conn.close()
 
 if __name__ == "__main__":
-    insert_users_data() 
+    insert_users_data()
