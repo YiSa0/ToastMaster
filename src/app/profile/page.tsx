@@ -1,11 +1,14 @@
+
 "use client";
 
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { db } from '@/lib/firebase/config';
 import { collection, query, where, getDocs, orderBy, Timestamp, doc, setDoc, getDoc, serverTimestamp, updateDoc } from 'firebase/firestore';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import type { Order, OrderItem, UserProfileData, GenderOption } from '@/lib/types';
-import { genderOptions } from '@/lib/types'; // Import genderOptions
+import { UserProfileSchema } from '@/lib/types';
 import SectionWrapper from '@/components/SectionWrapper';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -16,66 +19,76 @@ import { useToast } from '@/hooks/use-toast';
 import { UserCircle, Save, ShoppingBag, CalendarDays, DollarSign, AlertTriangle, Loader2, LogIn, Cake, Users } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 import Image from 'next/image';
-import Link from 'next/link'; 
+import Link from 'next/link';
+import * as z from 'zod';
 
 const CLEAR_GENDER_VALUE = "__clear_gender__"; 
 
 export default function ProfilePage() {
-  const { user, loading: authLoading, signInWithGoogle } = useAuth();
+  const { user, loading: authLoading, updateUserDisplayName } = useAuth();
   const { toast: showToast } = useToast();
 
-  const [profileData, setProfileData] = useState<UserProfileData>({
-    name: '',
-    email: '',
-    phone: '',
-    birthday: '',
-    gender: '',
-    updatedAt: null,
-  });
-  const [isSavingProfile, setIsSavingProfile] = useState(false);
-  const [isLoadingProfile, setIsLoadingProfile] = useState(true); // For loading profile data
-
   const [orderHistory, setOrderHistory] = useState<Order[]>([]);
-  const [isLoadingHistory, setIsLoadingHistory] = useState(false);
+  const [isLoadingHistory, setIsLoadingHistory] = useState(true);
+  const [isSavingProfile, setIsSavingProfile] = useState(false);
+  const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
+
+  const form = useForm<z.infer<typeof UserProfileSchema>>({
+    resolver: zodResolver(UserProfileSchema),
+    defaultValues: {
+      name: '',
+      email: '',
+      phone: '',
+      birthday: '',
+      gender: '',
+    },
+  });
 
   useEffect(() => {
     if (user && db) { 
-      setIsLoadingProfile(true);
       const fetchUserProfile = async () => {
         try {
           const userProfileRef = doc(db, "userProfiles", user.uid);
           const docSnap = await getDoc(userProfileRef);
           if (docSnap.exists()) {
-            const data = docSnap.data() as UserProfileData;
-            setProfileData(prev => ({
-              ...prev,
+            const data = docSnap.data();
+            form.reset({
               name: user.displayName || data.name || '',
               email: user.email || data.email || '',
               phone: data.phone || '',
               birthday: data.birthday || '',
               gender: data.gender || '',
-              updatedAt: data.updatedAt || null,
-            }));
+            });
+            if (data.updatedAt && data.updatedAt instanceof Timestamp) {
+              setLastUpdated(data.updatedAt.toDate());
+            }
           } else {
-            console.log("未找到用戶資料");
+            console.log("未找到用戶資料，使用 Auth 資料初始化。");
+             form.reset({
+                name: user.displayName || '',
+                email: user.email || '',
+                phone: '',
+                birthday: '',
+                gender: '',
+            });
           }
         } catch (error) {
           console.error("獲取用戶資料時出錯:", error);
           showToast({ title: "錯誤", description: "無法讀取您的個人資料。", variant: "destructive" });
-           setProfileData(prev => ({ // Fallback to auth data on error
-            ...prev,
+           form.reset({ // Fallback to auth data on error
             name: user.displayName || '',
             email: user.email || '',
-            updatedAt: null,
-          }));
-        } finally {
-          setIsLoadingProfile(false);
+            phone: '',
+            birthday: '',
+            gender: '',
+          });
         }
       };
 
       fetchUserProfile();
 
       const fetchUserOrders = async () => {
+        setIsLoadingHistory(true);
         try {
           const ordersRef = collection(db, "orders");
           const q = query(
@@ -92,55 +105,54 @@ export default function ProfilePage() {
         } catch (error) {
           console.error("獲取訂單時出錯:", error);
           showToast({ title: "錯誤", description: "無法讀取您的訂單記錄。", variant: "destructive" });
+        } finally {
+           setIsLoadingHistory(false);
         }
       };
       fetchUserOrders();
 
     } else if (!authLoading) { // If not authLoading and no user
-      setProfileData({ name: '', email: '', phone: '', birthday: '', gender: '', updatedAt: null });
+      form.reset({ name: '', email: '', phone: '', birthday: '', gender: '' });
       setOrderHistory([]);
-      setIsLoadingProfile(false);
     }
-  }, [user, authLoading, showToast, db]);
+  }, [user, authLoading, showToast, db, form]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setProfileData(prev => ({ ...prev, [name]: value }));
-  };
-
-  const handleGenderChange = (value: string) => { // Value can be GenderOption or CLEAR_GENDER_VALUE
-    setProfileData(prev => ({ ...prev, gender: value === CLEAR_GENDER_VALUE ? '' : value as GenderOption }));
-  };
-
-  const handleSubmitProfile = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmitProfile = async (values: z.infer<typeof UserProfileSchema>) => {
     if (!user || !db) {
       showToast({ title: "尚未登入或資料庫未連接", description: "請先登入以儲存您的個人資料。", variant: "destructive" });
       return;
     }
     setIsSavingProfile(true);
-    
-    const dataToSave: Partial<UserProfileData> = { 
-      phone: profileData.phone || '',
-      birthday: profileData.birthday || '',
-      gender: profileData.gender || '',
-      name: user.displayName || profileData.name, 
-      email: user.email || profileData.email,
-      updatedAt: serverTimestamp(), // Add server timestamp for update time
-    };
 
     try {
+      // 1. Update Firebase Auth display name if it has changed
+      if (user.displayName !== values.name) {
+        await updateUserDisplayName(values.name);
+      }
+
+      // 2. Prepare data for Firestore
+      const dataToSave: Omit<UserProfileData, 'updatedAt'> & { updatedAt: FieldValue } = { 
+        name: values.name,
+        email: values.email, // Keep email for reference, though not editable
+        phone: values.phone || '',
+        birthday: values.birthday || '',
+        gender: values.gender || '',
+        updatedAt: serverTimestamp(),
+      };
+      
+      // 3. Update Firestore document
       const userProfileRef = doc(db, "userProfiles", user.uid);
-      await updateDoc(userProfileRef, dataToSave);
+      await setDoc(userProfileRef, dataToSave, { merge: true });
+
       showToast({
         title: '個人資料已更新',
-        description: '您的額外資訊已成功儲存至資料庫。',
+        description: '您的資訊已成功儲存。',
       });
-      // Optionally re-fetch profile to get the server-generated timestamp if needed immediately in UI
+
+      // 4. Re-fetch profile to get the server-generated timestamp
       const docSnap = await getDoc(userProfileRef);
-      if (docSnap.exists()) {
-         const updatedData = docSnap.data() as UserProfileData;
-         setProfileData(prev => ({...prev, ...updatedData}));
+      if (docSnap.exists() && docSnap.data().updatedAt instanceof Timestamp) {
+         setLastUpdated(docSnap.data().updatedAt.toDate());
       }
     } catch (error) {
       console.error("Error saving user profile:", error);
@@ -149,8 +161,10 @@ export default function ProfilePage() {
       setIsSavingProfile(false);
     }
   };
+  
+  const isLoading = authLoading || form.formState.isLoading;
 
-  if (authLoading || (user && isLoadingProfile)) {
+  if (isLoading) {
     return (
       <div className="container mx-auto px-6 py-12 flex justify-center items-center min-h-[calc(100vh-200px)]">
         <Loader2 className="h-12 w-12 animate-spin text-primary" />
@@ -188,39 +202,41 @@ export default function ProfilePage() {
         className="max-w-2xl mx-auto"
       >
         <Card>
-          <form onSubmit={handleSubmitProfile}>
+          <form onSubmit={form.handleSubmit(handleSubmitProfile)}>
             <CardHeader>
               <CardTitle className="text-xl">編輯您的詳細資料</CardTitle>
-              {profileData.updatedAt && profileData.updatedAt instanceof Timestamp && (
+              {lastUpdated && (
                  <CardDescription className="text-xs text-muted-foreground mt-1">
-                   上次更新時間: {new Date(profileData.updatedAt.toDate()).toLocaleString()}
+                   上次更新時間: {lastUpdated.toLocaleString()}
                  </CardDescription>
               )}
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="space-y-2">
-                <Label htmlFor="name">全名</Label>
-                <Input id="name" name="name" value={profileData.name} onChange={handleChange} placeholder="輸入您的全名" disabled />
-                 <p className="text-xs text-muted-foreground">姓名由您的身份驗證提供者管理。</p>
+                <Label htmlFor="name">顯示名稱</Label>
+                <Input id="name" {...form.register('name')} placeholder="輸入您的顯示名稱" />
+                {form.formState.errors.name && <p className="text-sm text-destructive">{form.formState.errors.name.message}</p>}
               </div>
               <div className="space-y-2">
                 <Label htmlFor="email">電子郵件地址</Label>
-                <Input id="email" name="email" type="email" value={profileData.email} onChange={handleChange} placeholder="your@email.com" disabled />
-                <p className="text-xs text-muted-foreground">電子郵件由您的身份驗證提供者管理。</p>
+                <Input id="email" {...form.register('email')} placeholder="your@email.com" disabled />
+                <p className="text-xs text-muted-foreground">電子郵件地址不可在此修改。</p>
               </div>
               <div className="space-y-2">
                 <Label htmlFor="phone">電話號碼 (選填)</Label>
-                <Input id="phone" name="phone" type="tel" value={profileData.phone || ''} onChange={handleChange} placeholder="0912-345-678" />
+                <Input id="phone" {...form.register('phone')} type="tel" placeholder="0912-345-678" />
+                 {form.formState.errors.phone && <p className="text-sm text-destructive">{form.formState.errors.phone.message}</p>}
               </div>
               <div className="space-y-2">
                 <Label htmlFor="birthday" className="flex items-center gap-1"><Cake className="w-4 h-4" /> 生日 (選填)</Label>
-                <Input id="birthday" name="birthday" type="date" value={profileData.birthday || ''} onChange={handleChange} />
+                <Input id="birthday" {...form.register('birthday')} type="date" />
+                 {form.formState.errors.birthday && <p className="text-sm text-destructive">{form.formState.errors.birthday.message}</p>}
               </div>
               <div className="space-y-2">
                 <Label htmlFor="gender" className="flex items-center gap-1"><Users className="w-4 h-4" /> 性別 (選填)</Label>
-                <Select 
-                  value={profileData.gender || CLEAR_GENDER_VALUE} 
-                  onValueChange={handleGenderChange}
+                <Select
+                  value={form.watch('gender') || CLEAR_GENDER_VALUE}
+                  onValueChange={(value) => form.setValue('gender', value === CLEAR_GENDER_VALUE ? '' : value as GenderOption, { shouldValidate: true })}
                 >
                   <SelectTrigger id="gender">
                     <SelectValue placeholder="選擇您的性別" />
@@ -232,10 +248,11 @@ export default function ProfilePage() {
                     ))}
                   </SelectContent>
                 </Select>
+                 {form.formState.errors.gender && <p className="text-sm text-destructive">{form.formState.errors.gender.message}</p>}
               </div>
             </CardContent>
             <CardFooter>
-              <Button type="submit" className="w-full" disabled={isSavingProfile || isLoadingProfile}>
+              <Button type="submit" className="w-full" disabled={isSavingProfile || !form.formState.isDirty}>
                 <Save className="mr-2 h-4 w-4" /> {isSavingProfile ? '儲存中...' : '儲存變更'}
               </Button>
             </CardFooter>
@@ -312,6 +329,3 @@ export default function ProfilePage() {
     </div>
   );
 }
-
-
-    

@@ -1,4 +1,6 @@
+
 import type { Timestamp, FieldValue } from 'firebase/firestore';
+import { z } from 'zod';
 
 // Ingredients 表接口
 export interface Ingredient {
@@ -120,26 +122,29 @@ export interface CustomToast {
   basePrice: number; // Price of the bread
 }
 
-export interface OrderItem {
-  id: string; // Unique ID for this line item in the order
-  type: 'predefined' | 'custom';
-  name: string;
-  itemPrice: number; // Price of a single item (predefined or calculated custom)
-  quantity: number;
-  details?: string; // For custom toast, list of ingredients
-  image?: string; // For predefined items or a generic toast image
-}
+export const OrderItemSchema = z.object({
+  id: z.string(),
+  type: z.enum(['predefined', 'custom']),
+  name: z.string(),
+  itemPrice: z.number(),
+  quantity: z.number().min(1),
+  details: z.string().optional(),
+  image: z.string().optional(),
+});
 
-export interface Order {
-  id?: string; // Firestore document ID, optional here, assigned by Firestore
-  userId?: string | null; // ID of the user who placed the order, null if anonymous
-  items: OrderItem[];
-  pickupTime: string;
-  specialRequests: string;
-  totalPrice: number;
-  createdAt?: Timestamp; // Timestamp of when the order was placed
-  status?: 'pending' | 'confirmed' | 'ready' | 'completed' | 'cancelled'; // Optional order status
-}
+export const OrderSchema = z.object({
+  items: z.array(OrderItemSchema).min(1, "訂單中至少需要一項商品。"),
+  pickupTime: z.string().min(1, "請選擇您的預計取餐時間。"),
+  specialRequests: z.string().max(300, "特殊需求長度不能超過300個字元。").optional(),
+  totalPrice: z.number(),
+  userId: z.string().nullable().optional(),
+  createdAt: z.custom<FieldValue>().optional(),
+  status: z.enum(['pending', 'confirmed', 'ready', 'completed', 'cancelled']).optional(),
+});
+
+export type OrderItem = z.infer<typeof OrderItemSchema>;
+export type Order = z.infer<typeof OrderSchema> & { id?: string };
+
 
 export type WeatherOption = "晴朗" | "多雲" | "小雨" | "下雪" | "有風" | "晴" | "雲" | "毛毛雨" | "雷雨" | "有霧" | "煙霧" | "霾" | "沙塵" | "霧" | "沙" | "火山灰" | "颮" | "龍捲風" | "未知";
 // Original English options for OpenWeatherMap mapping if needed:
@@ -202,15 +207,19 @@ export interface HallOfFameEntry {
   achievementQuote?: string; // Optional quote from the user
 }
 
+export const UserProfileSchema = z.object({
+  name: z.string().min(2, "顯示名稱至少需要2個字元。").max(50, "顯示名稱長度不能超過50個字元。"),
+  email: z.string().email("請輸入有效的電子郵件地址。"),
+  phone: z.string().max(20, "電話號碼長度不能超過20個字元。").optional().or(z.literal('')),
+  birthday: z.string().optional().or(z.literal('')),
+  gender: z.string().optional().or(z.literal('')),
+});
+
 // For user profile information
-export interface UserProfileData {
-  name: string;
-  email: string;
-  phone: string;
-  birthday: string;
-  gender: string;
+export type UserProfileData = z.infer<typeof UserProfileSchema> & {
   updatedAt: Timestamp | FieldValue | null;
-}
+};
+
 
 export type GenderOption = 'male' | 'female' | 'other' | 'prefer_not_to_say' | '';
 

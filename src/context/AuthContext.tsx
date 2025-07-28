@@ -24,6 +24,7 @@ interface AuthContextType {
   signUpWithEmailPassword: (email: string, password: string, displayName: string) => Promise<User | null>;
   signInWithEmailPassword: (email: string, password: string) => Promise<User | null>;
   signOut: () => Promise<void>;
+  updateUserDisplayName: (displayName: string) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -79,6 +80,24 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       isMountedRef.current = false;
     };
   }, [showToast, hasWelcomeToastShown]); // Dependencies for useEffect
+
+  const updateUserDisplayName = async (displayName: string) => {
+    if (!firebaseAuthService.currentUser) {
+      showToast({ title: "錯誤", description: "使用者未登入，無法更新顯示名稱。", variant: "destructive" });
+      throw new Error("User not logged in");
+    }
+    try {
+      await updateProfile(firebaseAuthService.currentUser, { displayName });
+      // Manually update the user state in the context, as onAuthStateChanged might not fire for profile updates
+      // Creating a new object to ensure react state updates correctly
+      setUser(prevUser => prevUser ? ({ ...prevUser, displayName } as User) : null);
+      showToast({ title: "成功", description: "顯示名稱已更新。" });
+    } catch (error) {
+      console.error("Error updating display name:", error);
+      showToast({ title: "錯誤", description: "無法更新顯示名稱。", variant: "destructive" });
+      throw error; // Re-throw error to be caught by the calling function
+    }
+  };
 
   const signInWithGoogle = async () => {
     console.log("AuthContext: signInWithGoogle (popup mode) initiated.");
@@ -264,7 +283,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, signInWithGoogle, signUpWithEmailPassword, signInWithEmailPassword, signOut }}>
+    <AuthContext.Provider value={{ user, loading, signInWithGoogle, signUpWithEmailPassword, signInWithEmailPassword, signOut, updateUserDisplayName }}>
       {children}
     </AuthContext.Provider>
   );
