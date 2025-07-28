@@ -11,7 +11,8 @@ import {
   signOut as firebaseSignOut,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-  updateProfile
+  updateProfile,
+  sendPasswordResetEmail
 } from 'firebase/auth';
 import { FirebaseError } from 'firebase/app';
 import { auth as firebaseAuthService, db } from '@/lib/firebase/config';
@@ -25,6 +26,7 @@ interface AuthContextType {
   signInWithEmailPassword: (email: string, password: string) => Promise<User | null>;
   signOut: () => Promise<void>;
   updateUserDisplayName: (displayName: string) => Promise<void>;
+  sendPasswordReset: (email: string) => Promise<boolean>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -50,9 +52,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       };
     }
     
-    // No getRedirectResult processing needed for popup or email/password flows directly here.
-    // onAuthStateChanged will handle the user state updates.
-
     const unsubscribe = onAuthStateChanged(firebaseAuthService, (currentUser) => {
       if (!isMountedRef.current) {
         console.log("AuthContext: onAuthStateChanged triggered on unmounted component. Skipping update.");
@@ -79,7 +78,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       }
       isMountedRef.current = false;
     };
-  }, [showToast, hasWelcomeToastShown]); // Dependencies for useEffect
+  }, [showToast, hasWelcomeToastShown]);
 
   const updateUserDisplayName = async (displayName: string) => {
     if (!firebaseAuthService.currentUser) {
@@ -88,14 +87,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
     try {
       await updateProfile(firebaseAuthService.currentUser, { displayName });
-      // Manually update the user state in the context, as onAuthStateChanged might not fire for profile updates
-      // Creating a new object to ensure react state updates correctly
       setUser(prevUser => prevUser ? ({ ...prevUser, displayName } as User) : null);
       showToast({ title: "成功", description: "顯示名稱已更新。" });
     } catch (error) {
       console.error("Error updating display name:", error);
       showToast({ title: "錯誤", description: "無法更新顯示名稱。", variant: "destructive" });
-      throw error; // Re-throw error to be caught by the calling function
+      throw error;
     }
   };
 
@@ -126,7 +123,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         description: `Google 帳號 ${result.user.displayName || result.user.email} 登入成功。`,
         variant: "default",
       });
-      // onAuthStateChanged will set user and trigger welcome toast
     } catch (error: unknown) {
       console.error("AuthContext: signInWithGoogle - RAW ERROR OBJECT:", error); 
       if (isMountedRef.current) setLoading(false); 
@@ -193,7 +189,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       await updateProfile(userCredential.user, { displayName });
       console.log("✅ 註冊成功並更新個人資料:", userCredential.user.email);
       updateToast({ id: toastId, title: "註冊成功！", description: `帳號 ${displayName} (${email}) 已成功建立。`, variant: "default" });
-      // onAuthStateChanged will handle setting the user and the main welcome toast
       return userCredential.user;
     } catch (error: unknown) {
       console.error("AuthContext: signUpWithEmailPassword - RAW ERROR OBJECT:", error);
@@ -229,7 +224,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       const userCredential = await signInWithEmailAndPassword(firebaseAuthService, email, password);
       console.log("✅ Email/密碼登入成功:", userCredential.user.email);
       updateToast({ id: toastId, title: "登入成功！", description: `歡迎回來，${userCredential.user.displayName || userCredential.user.email}！`, variant: "default" });
-      // onAuthStateChanged will handle setting the user and the main welcome toast
       return userCredential.user;
     } catch (error: unknown) {
       console.error("AuthContext: signInWithEmailPassword - RAW ERROR OBJECT:", error);
@@ -238,7 +232,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         switch (error.code) {
           case 'auth/user-not-found':
           case 'auth/wrong-password':
-          case 'auth/invalid-credential': // Covers both user-not-found and wrong-password in newer SDK versions
+          case 'auth/invalid-credential':
             errorMessage = "電子郵件或密碼錯誤，請再試一次。";
             break;
           case 'auth/invalid-email':
@@ -281,11 +275,40 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       if (isMountedRef.current) setLoading(false); 
     }
   };
+  
+  const sendPasswordReset = async (email: string): Promise<boolean> => {
+    if (!firebaseAuthService) {
+      showToast({ title: "錯誤", description: "Firebase 未設定。", variant: "destructive" });
+      return false;
+    }
+    try {
+      await sendPasswordResetEmail(firebaseAuthService, email);
+      showToast({
+        title: "重設信件已寄出",
+        description: `一封密碼重設信件已寄送至 ${email}，請檢查您的收件匣。`,
+      });
+      return true;
+    } catch (error: unknown) {
+      console.error("Error sending password reset email:", error);
+      let errorMessage = "無法寄送密碼重設信件，請稍後再試。";
+      if (error instanceof FirebaseError) {
+        if (error.code === 'auth/user-not-found' || error.code === 'auth/invalid-email') {
+          errorMessage = "此電子郵件地址未被註冊，請檢查輸入是否正確。";
+        }
+      }
+      showToast({
+        title: "寄送失敗",
+        description: errorMessage,
+        variant: "destructive",
+      });
+      return false;
+    }
+  };
 
   return (
-    <AuthContext.Provider value={{ user, loading, signInWithGoogle, signUpWithEmailPassword, signInWithEmailPassword, signOut, updateUserDisplayName }}>
+    <AuthContext.Provider value={{ user, loading, signInWithGoogle, signUpWithEmailPassword, signInWithEmailPassword, signOut, updateUserDisplayName, sendPasswordReset }}>
       {children}
-    </AuthContext.Provider>
+    </Auth.Provider>
   );
 };
 

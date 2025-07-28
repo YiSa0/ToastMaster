@@ -11,12 +11,12 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger, DialogFooter, DialogClose } from '@/components/ui/dialog';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { useAuth } from '@/context/AuthContext';
-import { LogIn, UserPlus, KeyRound, Mail, UserCircle as UserIcon, ChromeIcon } from 'lucide-react'; // UserCircle aliased to avoid conflict
+import { LogIn, UserPlus, KeyRound, Mail, UserCircle as UserIcon, ChromeIcon, Send } from 'lucide-react'; // UserCircle aliased to avoid conflict
 import SectionWrapper from '@/components/SectionWrapper';
 import { useToast } from '@/hooks/use-toast';
-import { auth as firebaseAuthService } from '@/lib/firebase/config'; // Import directly for currentUser check
 
 const signUpSchema = z.object({
   displayName: z.string().min(2, { message: "顯示名稱至少需要2個字元。" }),
@@ -29,30 +29,34 @@ const signInSchema = z.object({
   password: z.string().min(1, { message: "請輸入密碼。" }),
 });
 
+const passwordResetSchema = z.object({
+  email: z.string().email({ message: "請輸入有效的電子郵件地址以接收重設信件。" }),
+});
+
 type SignUpFormValues = z.infer<typeof signUpSchema>;
 type SignInFormValues = z.infer<typeof signInSchema>;
+type PasswordResetFormValues = z.infer<typeof passwordResetSchema>;
 
 export default function AuthPage() {
   const router = useRouter();
-  const { signInWithGoogle, signUpWithEmailPassword, signInWithEmailPassword, user, loading } = useAuth();
+  const { signInWithGoogle, signUpWithEmailPassword, signInWithEmailPassword, user, loading, sendPasswordReset } = useAuth();
   const { toast: showToast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isResetDialogOpen, setIsResetDialogOpen] = useState(false);
 
   const signUpForm = useForm<SignUpFormValues>({
     resolver: zodResolver(signUpSchema),
-    defaultValues: {
-      displayName: "",
-      email: "",
-      password: "",
-    },
+    defaultValues: { displayName: "", email: "", password: "" },
   });
 
   const signInForm = useForm<SignInFormValues>({
     resolver: zodResolver(signInSchema),
-    defaultValues: {
-      email: "",
-      password: "",
-    },
+    defaultValues: { email: "", password: "" },
+  });
+
+  const passwordResetForm = useForm<PasswordResetFormValues>({
+    resolver: zodResolver(passwordResetSchema),
+    defaultValues: { email: "" },
   });
 
   useEffect(() => {
@@ -63,35 +67,36 @@ export default function AuthPage() {
 
   const handleSignUp = async (values: SignUpFormValues) => {
     setIsSubmitting(true);
-    const signedUpUser = await signUpWithEmailPassword(values.email, values.password, values.displayName);
+    await signUpWithEmailPassword(values.email, values.password, values.displayName);
     setIsSubmitting(false);
-    if (signedUpUser) {
-      // Redirection is handled by the useEffect hook now
-    }
   };
 
   const handleSignIn = async (values: SignInFormValues) => {
     setIsSubmitting(true);
-    const signedInUser = await signInWithEmailPassword(values.email, values.password);
+    await signInWithEmailPassword(values.email, values.password);
     setIsSubmitting(false);
-    if (signedInUser) {
-       // Redirection is handled by the useEffect hook now
-    }
   };
   
   const handleGoogleSignIn = async () => {
     setIsSubmitting(true);
     await signInWithGoogle();
     setIsSubmitting(false);
-    // Redirection is handled by the useEffect hook observing user state change
+  };
+  
+  const handlePasswordReset = async (values: PasswordResetFormValues) => {
+    setIsSubmitting(true);
+    const success = await sendPasswordReset(values.email);
+    setIsSubmitting(false);
+    if (success) {
+      setIsResetDialogOpen(false); // Close dialog on success
+      passwordResetForm.reset();
+    }
   };
 
   if (loading) {
     return <div className="container mx-auto px-6 py-12 text-center">載入中...</div>;
   }
 
-  // If user is already logged in and useEffect hasn't redirected yet, show loading.
-  // The useEffect will handle the actual redirect.
   if (user) {
     return <div className="container mx-auto px-6 py-12 text-center">已登入，正在重新導向...</div>;
   }
@@ -131,7 +136,47 @@ export default function AuthPage() {
                       name="password"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="flex items-center gap-2"><KeyRound /> 密碼</FormLabel>
+                          <div className="flex justify-between items-center">
+                            <FormLabel className="flex items-center gap-2"><KeyRound /> 密碼</FormLabel>
+                             <Dialog open={isResetDialogOpen} onOpenChange={setIsResetDialogOpen}>
+                              <DialogTrigger asChild>
+                                <Button type="button" variant="link" className="text-xs p-0 h-auto">忘記密碼？</Button>
+                              </DialogTrigger>
+                              <DialogContent>
+                                <DialogHeader>
+                                  <DialogTitle>重設您的密碼</DialogTitle>
+                                  <DialogDescription>
+                                    請輸入您註冊時使用的電子郵件地址，我們將會寄送一封包含重設連結的信件給您。
+                                  </DialogDescription>
+                                </DialogHeader>
+                                <Form {...passwordResetForm}>
+                                  <form onSubmit={passwordResetForm.handleSubmit(handlePasswordReset)} className="space-y-4">
+                                      <FormField
+                                        control={passwordResetForm.control}
+                                        name="email"
+                                        render={({ field }) => (
+                                          <FormItem>
+                                            <FormLabel>電子郵件</FormLabel>
+                                            <FormControl>
+                                              <Input placeholder="your@email.com" {...field} />
+                                            </FormControl>
+                                            <FormMessage />
+                                          </FormItem>
+                                        )}
+                                      />
+                                    <DialogFooter>
+                                      <DialogClose asChild>
+                                        <Button type="button" variant="secondary" disabled={isSubmitting}>取消</Button>
+                                      </DialogClose>
+                                      <Button type="submit" disabled={isSubmitting}>
+                                        {isSubmitting ? '傳送中...' : <><Send className="mr-2 h-4 w-4" /> 發送重設信件</>}
+                                      </Button>
+                                    </DialogFooter>
+                                  </form>
+                                </Form>
+                              </DialogContent>
+                            </Dialog>
+                          </div>
                           <FormControl>
                             <Input type="password" placeholder="••••••••" {...field} />
                           </FormControl>
