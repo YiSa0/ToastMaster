@@ -210,7 +210,7 @@ export interface HallOfFameEntry {
 export const UserProfileSchema = z.object({
   name: z.string().min(2, "顯示名稱至少需要2個字元。").max(50, "顯示名稱長度不能超過50個字元。"),
   email: z.string().email("請輸入有效的電子郵件地址。"),
-  phone: z.string().max(15, "電話號碼長度不能超過15個字元。").optional().or(z.literal('')),
+  phone: z.string().max(15, "電話號碼長度不能超過15個字元。").regex(/^[0-9]*$/, "電話號碼只能包含數字。").optional().or(z.literal('')),
   birthday: z.string().optional().or(z.literal('')),
   gender: z.string().optional().or(z.literal('')),
 });
