@@ -37,6 +37,64 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [hasWelcomeToastShown, setHasWelcomeToastShown] = useState(false);
   const { toast: showToast } = useToast();
   const isMountedRef = useRef(true);
+  const idleTimerRef = useRef<NodeJS.Timeout | null>(null);
+
+  const signOut = useCallback(async (isIdle = false) => {
+    console.log(`AuthContext: signOut initiated. Is idle: ${isIdle}`);
+    if (!firebaseAuthService) {
+      showToast({ title: "登出錯誤", description: "Firebase 未設定。", variant: "destructive" });
+      console.error("AuthContext: Cannot signOut, Firebase auth service not initialized.");
+      return;
+    }
+    try {
+      await firebaseSignOut(firebaseAuthService);
+      console.log("AuthContext: Successfully signed out from Firebase.");
+      if (isIdle) {
+         showToast({ title: "自動登出", description: "因閒置過久，您已被自動登出以保護帳戶安全。" });
+      } else {
+         showToast({ title: "已登出", description: "您已成功登出。" });
+      }
+    } catch (error: unknown) {
+      console.error("AuthContext: signOut - RAW ERROR OBJECT:", error);
+      let description = "無法登出";
+      if (error instanceof FirebaseError) {
+        description = `無法登出：${error.message} (代碼: ${error.code})`;
+        console.error(`AuthContext: Firebase signOut Error (${error.code})`, error.message);
+      } else if (error instanceof Error) {
+        description = `無法登出：${error.message}`;
+        console.error("AuthContext: Generic signOut Error", error.message);
+      }
+      showToast({ title: "登出錯誤", description, variant: "destructive" });
+      if (isMountedRef.current) setLoading(false); 
+    }
+  }, [showToast]);
+
+  const resetIdleTimer = useCallback(() => {
+    if (idleTimerRef.current) {
+      clearTimeout(idleTimerRef.current);
+    }
+    idleTimerRef.current = setTimeout(() => {
+      signOut(true);
+    }, 15 * 60 * 1000); // 15 minutes
+  }, [signOut]);
+
+  useEffect(() => {
+    if (user) {
+      const events: (keyof WindowEventMap)[] = ['mousemove', 'mousedown', 'keypress', 'touchstart', 'scroll'];
+      
+      resetIdleTimer(); // Start the timer on login
+      
+      events.forEach(event => window.addEventListener(event, resetIdleTimer));
+
+      return () => {
+        if (idleTimerRef.current) {
+          clearTimeout(idleTimerRef.current);
+        }
+        events.forEach(event => window.removeEventListener(event, resetIdleTimer));
+      };
+    }
+  }, [user, resetIdleTimer]);
+
 
   useEffect(() => {
     isMountedRef.current = true;
@@ -249,32 +307,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       return null;
     }
   };
-
-  const signOut = async () => {
-    console.log("AuthContext: signOut initiated.");
-    if (!firebaseAuthService) {
-      showToast({ title: "登出錯誤", description: "Firebase 未設定。", variant: "destructive" });
-      console.error("AuthContext: Cannot signOut, Firebase auth service not initialized.");
-      return;
-    }
-    try {
-      await firebaseSignOut(firebaseAuthService);
-      console.log("AuthContext: Successfully signed out from Firebase.");
-      showToast({ title: "已登出", description: "您已成功登出。" });
-    } catch (error: unknown) {
-      console.error("AuthContext: signOut - RAW ERROR OBJECT:", error);
-      let description = "無法登出";
-      if (error instanceof FirebaseError) {
-        description = `無法登出：${error.message} (代碼: ${error.code})`;
-        console.error(`AuthContext: Firebase signOut Error (${error.code})`, error.message);
-      } else if (error instanceof Error) {
-        description = `無法登出：${error.message}`;
-        console.error("AuthContext: Generic signOut Error", error.message);
-      }
-      showToast({ title: "登出錯誤", description, variant: "destructive" });
-      if (isMountedRef.current) setLoading(false); 
-    }
-  };
   
   const sendPasswordReset = async (email: string): Promise<boolean> => {
     if (!firebaseAuthService) {
@@ -306,9 +338,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, signInWithGoogle, signUpWithEmailPassword, signInWithEmailPassword, signOut, updateUserDisplayName, sendPasswordReset }}>
+    <AuthContext.Provider value={{ user, loading, signInWithGoogle, signUpWithEmailPassword, signInWithEmailPassword, signOut: () => signOut(false), updateUserDisplayName, sendPasswordReset }}>
       {children}
-    </Auth.Provider>
+    </AuthContext.Provider>
   );
 };
 
@@ -319,3 +351,5 @@ export const useAuth = () => {
   }
   return context;
 };
+
+    
