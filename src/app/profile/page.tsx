@@ -4,11 +4,11 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { db } from '@/lib/firebase/config';
-import { collection, query, where, getDocs, orderBy, Timestamp, doc, setDoc, getDoc, serverTimestamp, updateDoc } from 'firebase/firestore';
+import { collection, query, where, getDocs, orderBy, Timestamp, doc, setDoc, getDoc, serverTimestamp, updateDoc, FieldValue } from 'firebase/firestore';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import type { Order, OrderItem, UserProfileData, GenderOption } from '@/lib/types';
-import { UserProfileSchema } from '@/lib/types';
+import { UserProfileSchema, genderOptions } from '@/lib/types';
 import SectionWrapper from '@/components/SectionWrapper';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -329,3 +329,5 @@ export default function ProfilePage() {
     </div>
   );
 }
+
+    
