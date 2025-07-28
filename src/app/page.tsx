@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect, useMemo } from 'react';
@@ -11,7 +12,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from '@/hooks/use-toast';
 import type { Ingredient, MenuItem, CustomToast, Order, OrderItem, MoodOption, WeatherOption } from '@/lib/types';
 import { MENU_ITEMS, BREADS, MEATS, SAUCES, TOPPINGS } from '@/lib/data';
-import { moodOptions, weatherOptionsManual } from '@/lib/types';
+import { moodOptions, weatherOptionsManual, OrderSchema, UserProfileSchema } from '@/lib/types';
 import { suggestToastPairing, type SuggestToastPairingInput, type SuggestToastPairingOutput } from '@/ai/flows/suggest-toast-pairing';
 import { getCurrentWeather } from '@/lib/actions/weatherActions';
 import { useAuth } from '@/context/AuthContext';
@@ -156,6 +157,19 @@ export default function HomePage() {
     setOrder(prev => ({ ...prev, items: [...prev.items, newOrderItem] }));
     showToast({ title: "客製化吐司已加入", description: "您獨一無二的創作已在訂單中。" });
     setCurrentCustomToast(initialCustomToastState);
+  };
+    
+  const increaseOrderItemQuantity = (itemId: string) => {
+    setOrder(prevOrder => {
+      const newItems = prevOrder.items.map(item => {
+        if (item.id === itemId) {
+          return { ...item, quantity: item.quantity + 1 };
+        }
+        return item;
+      });
+      showToast({ title: "數量已更新", description: `品項數量已增加。` });
+      return { ...prevOrder, items: newItems };
+    });
   };
 
   const decreaseOrderItemQuantity = (itemId: string) => {
@@ -348,17 +362,28 @@ export default function HomePage() {
   };
 
   const placeOrder = async () => {
-    if (order.items.length === 0) {
-      showToast({ title: "訂單是空的", description: "請先將一些美味的品項加入您的訂單。", variant: "destructive" });
+    const safeOrder = {
+      ...order,
+      specialRequests: order.specialRequests?.replace(/<[^>]*>?/gm, '') || ''
+    };
+    
+    const result = OrderSchema.safeParse(safeOrder);
+
+    if (!result.success) {
+      // Find the first error and show it.
+      const firstError = result.error.errors[0];
+      showToast({
+        title: "訂單資料錯誤",
+        description: `[${firstError.path.join('.')}]: ${firstError.message}`,
+        variant: "destructive"
+      });
       return;
     }
-    if (!order.pickupTime) {
-       showToast({ title: "缺少取餐時間", description: "請選擇您的預計取餐時間。", variant: "destructive" });
-       return;
-    }
+
+    const validatedOrder = result.data;
 
     const orderToSave = {
-      ...order,
+      ...validatedOrder,
       userId: user ? user.uid : null,
       createdAt: serverTimestamp(),
       status: 'confirmed' as const,
@@ -810,6 +835,7 @@ export default function HomePage() {
               placeholder="例如：不要洋蔥，培根要特別酥脆"
               value={order.specialRequests}
               onChange={(e) => setOrder(prev => ({ ...prev, specialRequests: e.target.value }))}
+              maxLength={300}
             />
           </div>
         </div>
@@ -835,6 +861,15 @@ export default function HomePage() {
                 </div>
                 <p className="font-semibold text-base mr-2">NT${(orderItem.itemPrice * orderItem.quantity).toFixed(2)}</p>
                 <div className="flex flex-col sm:flex-row gap-1">
+                   <Button
+                    variant="outline"
+                    size="icon"
+                    className="h-8 w-8"
+                    onClick={() => increaseOrderItemQuantity(orderItem.id)}
+                    aria-label={`增加 ${orderItem.name} 的數量`}
+                  >
+                    <PlusCircle className="h-4 w-4" />
+                  </Button>
                   <Button
                     variant="outline"
                     size="icon"
