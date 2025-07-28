@@ -134,7 +134,7 @@ export const OrderItemSchema = z.object({
 
 export const OrderSchema = z.object({
   items: z.array(OrderItemSchema).min(1, "訂單中至少需要一項商品。"),
-  pickupTime: z.string().min(1, "請選擇您的預計取餐時間。"),
+  pickupTime: z.string().optional(),
   specialRequests: z.string().max(300, "特殊需求長度不能超過300個字元。").optional(),
   totalPrice: z.number(),
   userId: z.string().nullable().optional(),
@@ -210,7 +210,7 @@ export interface HallOfFameEntry {
 export const UserProfileSchema = z.object({
   name: z.string().min(2, "顯示名稱至少需要2個字元。").max(50, "顯示名稱長度不能超過50個字元。"),
   email: z.string().email("請輸入有效的電子郵件地址。"),
-  phone: z.string().max(20, "電話號碼長度不能超過20個字元。").optional().or(z.literal('')),
+  phone: z.string().max(15, "電話號碼長度不能超過15個字元。").optional().or(z.literal('')),
   birthday: z.string().optional().or(z.literal('')),
   gender: z.string().optional().or(z.literal('')),
 });
